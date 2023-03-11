@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HamburgerProje.Migrations
 {
     [DbContext(typeof(UygulamaDbContext))]
-    [Migration("20230310151613_ilk")]
+    [Migration("20230311115527_ilk")]
     partial class ilk
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

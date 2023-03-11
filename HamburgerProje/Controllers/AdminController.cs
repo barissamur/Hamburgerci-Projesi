@@ -31,8 +31,28 @@ namespace HamburgerProje.Controllers
         }
 
         [HttpPost]
-        public IActionResult MenuOlustur(int id)
+        public IActionResult MenuOlustur(MenuViewModel menuVm)
         {
+            var hmList = new List<HamburgerMenu>();
+            var yeniMenu = new Menu();
+            yeniMenu.Ad = menuVm.Ad;
+            yeniMenu.Fiyat = menuVm.Fiyat;
+            _db.Menuler.Add(yeniMenu);
+            _db.SaveChanges();
+
+            foreach (var item in MenuViewModel.Hamburgerler)
+            {
+                var hm = new HamburgerMenu()
+                {
+                    HamburgerId = item.Id,
+                    MenuId = yeniMenu.Id
+                };
+
+                hmList.Add(hm);
+            }
+
+            _db.HamburgerMenuler.AddRange(hmList);
+            _db.SaveChanges();
 
             return View();
         }
@@ -241,6 +261,7 @@ namespace HamburgerProje.Controllers
         }
         #endregion
 
+        //----
         #region Ekstra Metotları
         public int MenuyeEkstraEkle(int id)
         {
@@ -275,13 +296,3 @@ namespace HamburgerProje.Controllers
         // action'a ek olarak menü id istiyecez. eğer menü id varsa o menüyü bulup içine ekle. menü id yoksa yeni menü oluştur
     }
 }
-//var menu = new Menu();
-
-//foreach (var item in menuVm.Hamburgerler)
-//{
-//    var hm = new HamburgerMenu()
-//    {
-//        HamburgerId = item.Id,
-//        MenuId = menu.Id
-//    };
-//}
