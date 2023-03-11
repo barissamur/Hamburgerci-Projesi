@@ -1,0 +1,108 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - HamburgerProje</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/5.2.3/united/bootstrap.min.css" integrity="sha512-OcJVUFAaQ1kaFvQN/nsIoTSTdCyF7aVSpNv5BkqRm9DvMCM+9hndo+Lz8mfZ9Q6tPOn+tSXjZT3g+CSzFeUArA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
+    <link href="~/lib/font-awesome/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/HamburgerProje.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-primary  border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="~/img/ffflogo.png" height="90" />
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item me-2">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">
+                                <i class="fa-solid fa-home"></i>
+                                Anasayfa
+                            </a>
+                        </li>
+                        <li class="nav-item me-2">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Privacy">
+                                <i class="fa-solid fa-burger"></i>
+                                Ürünler
+                            </a>
+                        </li>
+                        <li class="nav-item me-2">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Privacy">
+                                <i class="fa-solid fa-bowl-food"></i>
+                                Menüler
+                            </a>
+                        </li>
+                        <li class="nav-item me-2">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Privacy">
+                                <i class="fa fa-ticket" aria-hidden="true"></i>
+                                Fırsatlar
+                            </a>
+                        </li>
+                        <li class="nav-item me-2">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Privacy">
+                                <i class="fa fa-paperclip" aria-hidden="true"></i>
+                                Hakkımızda
+                            </a>
+                        </li>
+                        <li class="nav-item me-2">
+                            <a class="nav-link text-white" asp-area="" asp-controller="SiparisOlustur" asp-action="Index">
+                                <i class="fa-solid fa-plus"></i>
+                                Sipariş Oluştur
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav ">
+                        <li class="nav-item me-2">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Privacy">
+                                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                                Sepetim
+                            </a>
+                        </li>
+                        <li class="nav-item me-2">
+                            <a class="nav-link text-white" asp-area="">
+                                <i class="fa fa-phone" aria-hidden="true"></i>
+                                Sipariş Hattı:
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <span class="nav-link text-info">0312 255 77 77</span>
+                        </li>
+                        <li class="nav-item me-2">
+                            <a class="nav-link text-success" asp-controller="Admin" asp-action="Index">
+                                Admin Girişi
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container-fluid">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2023 - HamburgerProje - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+
+    </footer>
+    <script src="~/lib/font-awesome/js/all.js"></script>
+    <script src="~/lib/font-awesome/js/all.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

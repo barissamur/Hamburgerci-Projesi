@@ -1,0 +1,113 @@
+﻿@model DbViewModel
+@inject UygulamaDbContext db
+<div class="container">
+    <a class="btn btn-warning my-4 border w-100" asp-action="MenuOlustur">
+        <h1><i class="fa-solid fa-plus fs-1 ms-4"></i>Yeni Menü Oluştur</h1>
+
+    </a>
+
+    <div class="row">
+
+        <div class="col-6">
+            <div class="card card-header shadow mb-4">
+                <h1 class="text-center mb-2">Hamburger Oluştur</h1>
+                <form asp-action="HamburgerEkle" method="post" enctype="multipart/form-data">
+                    <div class="mb-2">
+                        <label asp-for="HamburgerViewModel.Ad">Ad</label>
+                        <input asp-for="HamburgerViewModel.Ad" type="text" class="form-control" />
+                        <span asp-validation-for="HamburgerViewModel.Ad"></span>
+                    </div>
+                    <div class="mb-2">
+                        <label asp-for="HamburgerViewModel.Fiyat">Fiyat</label>
+                        <input asp-for="HamburgerViewModel.Fiyat" type="text" class="form-control" />
+                        <span asp-validation-for="HamburgerViewModel.Fiyat"></span>
+                    </div>
+                    <div class="mb-2">
+                        <label asp-for="HamburgerViewModel.Resim"></label>
+                        <input asp-for="HamburgerViewModel.Resim" type="file" class="form-control" />
+                        <span asp-validation-for="HamburgerViewModel.Resim" class="text-danger"></span>
+                    </div>
+                    <button class="btn btn-primary">Ekle</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-6">
+            <div class="card card-header shadow mb-4">
+                <h1 class="text-center mb-2">Sos Oluştur</h1>
+                <form asp-action="SosEkle" method="post" enctype="multipart/form-data">
+                    <div class="mb-2">
+                        <label asp-for="SosViewModel.Ad">Ad</label>
+                        <input asp-for="SosViewModel.Ad" type="text" class="form-control" />
+                        <span asp-validation-for="SosViewModel.Ad"></span>
+                    </div>
+                    <div class="mb-2">
+                        <label asp-for="SosViewModel.Fiyat">Fiyat</label>
+                        <input asp-for="SosViewModel.Fiyat" type="text" class="form-control" />
+                        <span asp-validation-for="SosViewModel.Fiyat"></span>
+                    </div>
+                    <div class="mb-2">
+                        <label asp-for="SosViewModel.Resim"></label>
+                        <input asp-for="SosViewModel.Resim" type="file" class="form-control" />
+                        <span asp-validation-for="SosViewModel.Resim" class="text-danger"></span>
+                    </div>
+                    <button class="btn btn-primary">Ekle</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-6">
+            <div class="card card-header shadow mb-4">
+                <h1 class="text-center mb-2">Ekstra Oluştur</h1>
+                <form asp-action="EkstraEkle" method="post" enctype="multipart/form-data">
+                    <div class="mb-2">
+                        <label asp-for="EkstraViewModel.Ad">Ad</label>
+                        <input asp-for="EkstraViewModel.Ad" type="text" class="form-control" />
+                        <span asp-validation-for="EkstraViewModel.Ad"></span>
+                    </div>
+                    <div class="mb-2">
+                        <label asp-for="EkstraViewModel.Fiyat">Fiyat</label>
+                        <input asp-for="EkstraViewModel.Fiyat" type="text" class="form-control" />
+                        <span asp-validation-for="EkstraViewModel.Fiyat"></span>
+                    </div>
+                    <div class="mb-2">
+                        <label asp-for="EkstraViewModel.Resim"></label>
+                        <input asp-for="EkstraViewModel.Resim" type="file" class="form-control" />
+                        <span asp-validation-for="EkstraViewModel.Resim" class="text-danger"></span>
+                    </div>
+                    <button class="btn btn-primary">Ekle</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-6">
+            <div class="card card-header shadow mb-4">
+                <h1 class="text-center mb-2">İçecek Oluştur</h1>
+                <form asp-action="IcecekEkle" method="post" enctype="multipart/form-data">
+                    <div class="mb-2">
+                        <label asp-for="IcecekViewModel.Ad">Ad</label>
+                        <input asp-for="IcecekViewModel.Ad" type="text" class="form-control" />
+                        <span asp-validation-for="IcecekViewModel.Ad"></span>
+                    </div>
+                    <div class="mb-2">
+                        <label asp-for="IcecekViewModel.Fiyat">Fiyat</label>
+                        <input asp-for="IcecekViewModel.Fiyat" type="text" class="form-control" />
+                        <span asp-validation-for="IcecekViewModel.Fiyat"></span>
+                    </div>
+                    <div class="mb-2">
+                        <label asp-for="IcecekViewModel.Resim"></label>
+                        <input asp-for="IcecekViewModel.Resim" type="file" class="form-control" />
+                        <span asp-validation-for="IcecekViewModel.Resim" class="text-danger"></span>
+                    </div>
+                    <button class="btn btn-primary">Ekle</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

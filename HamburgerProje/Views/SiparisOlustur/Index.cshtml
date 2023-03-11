@@ -1,0 +1,32 @@
+﻿@model UygulamaDbContext
+
+@{
+    ViewData["Title"] = "Index";
+}
+<div class="container">
+
+    <h3>Menüler</h3>
+    @*@foreach (var item in Model.Menuler)
+    {
+        <div class="d-flex">
+            <div>
+                <h5>@item.Ad</h5>
+                <p>
+                    @{
+                        string.Join(", ", item.Hamburgerler);
+                    }
+
+                </p>
+
+
+            </div>
+            <div>
+
+            </div>
+        </div>
+    }*@
+
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
