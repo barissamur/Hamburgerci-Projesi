@@ -22,63 +22,32 @@
             <div class="row justify-content-around mb-4 mt-4">
 
                 <div class="col-5 border shadow rounded p-3" id="hamburgerler">
-                    <h5 class="mb-4">Hamburgerler</h5>
+
 
                     @*ajax gelecek*@
 
                 </div>
 
 
-                <div class="col-5 border shadow rounded p-3">
-                    <h5 class="my-4">İçecekler</h5>
+                <div class="col-5 border shadow rounded p-3" id="icecekler">
 
-                    @foreach (var item in db.Icecekler)
-                    {
-                        <div class="mb-2 px-2 border d-flex justify-content-end ">
-                            <span class="me-auto">@item.Ad</span>
-                            <a>
-                                @(ViewBag.Menu != null ? ((Menu)ViewBag.Menu).Icecekler.Count(x => x.Ad == item.Ad) : "0")
-                            </a>
-                            <a asp-action="MenuyeIcecekEkle" asp-route-id="@item.Id" asp-route-menu="@Model" class="ms-4"><i class="btn btn-primary fa-solid fa-plus"></i></a>
-                            <a><i class="btn btn-primary ms-2 fa-solid fa-minus"></i></a>
-                        </div>
-                    }
+                    @*ajax gelecek*@
+
                 </div>
 
             </div>
 
             <div class="row justify-content-around mb-4">
 
-                <div class="col-5 border shadow rounded p-3">
-                    <h5 class="my-4">Soslar</h5>
+                <div class="col-5 border shadow rounded p-3" id="soslar">
 
-                    @foreach (var item in db.Soslar)
-                    {
-                        <div class="mb-2 px-2 border d-flex justify-content-end ">
-                            <span class="me-auto">@item.Ad</span>
-                            <a>
-                                @(ViewBag.Menu != null ? ((Menu)ViewBag.Menu).Soslar.Count(x => x.Ad == item.Ad) : "0")
-                            </a>
-                            <a asp-action="MenuyeSosEkle" asp-route-id="@item.Id" asp-route-menu="@Model" class="ms-4"><i class="btn btn-primary fa-solid fa-plus"></i></a>
-                            <a><i class="btn btn-primary ms-2 fa-solid fa-minus"></i></a>
-                        </div>
-                    }
+                    @*ajax gelecek*@
+
                 </div>
 
-                <div class="col-5 border shadow rounded p-3">
-                    <h5 class="my-4">Ekstralar</h5>
+                <div class="col-5 border shadow rounded p-3" id="ekstralar">
 
-                    @foreach (var item in db.Ekstralar)
-                    {
-                        <div class="mb-2 px-2 border d-flex justify-content-end ">
-                            <span class="me-auto">@item.Ad</span>
-                            <a>
-                                @(ViewBag.Menu != null ? ((Menu)ViewBag.Menu).Ekstralar.Count(x => x.Ad == item.Ad) : "0")
-                            </a>
-                            <a asp-action="MenuyeEkstraEkle" asp-route-id="@item.Id" asp-route-menu="@Model" class="ms-4"><i class="btn btn-primary fa-solid fa-plus"></i></a>
-                            <a><i class="btn btn-primary ms-2 fa-solid fa-minus"></i></a>
-                        </div>
-                    }
+                    @*ajax gelecek*@
 
                 </div>
             </div>
@@ -96,27 +65,36 @@
 
 @section Scripts{
     <script>
+        //hamburger fonksiyonları
         function hamburgerArttir(id) {
-
             let url = "@Url.Action("MenuyeHamburgerEkle", "Admin")?id=" + id;
-
 
             fetch(url)
                 .then(res => res.text())
                 .then(data => {
-                    $('#'+id).html(data);
+                    $('#' + id + 'hmb').html(data);
                 })
+        }
 
+        //hamburger fonksiyonları
+        function hamburgerAzalt(id) {
+            let url = "@Url.Action("MenudenHamburgerCikar", "Admin")?id=" + id;
+
+            fetch(url)
+                .then(res => res.text())
+                .then(data => {
+                    $('#'+id+'hmb').html(data);
+                })
         }
 
 
-        let hmbSayisi = "@Url.Action("hmbSayisi", "Admin")";
-        let menu = "@(MenuViewModel.Hamburgerler)";
-        let url2 = "@Url.Action("HamburgerleriListele", "Admin")";
-        fetch(url2)
+        //Hamburgerleri listeleme
+        let hmbUrl = "@Url.Action("HamburgerleriListele", "Admin")";
+        fetch(hmbUrl)
             .then(res => res.json())
             .then(data => {
                 $("#hamburgerler").html("");
+                $("#hamburgerler").append(`<h5 class="mb - 4">Hamburgerler</h5>`);
                 for (const hmb of data) {
 
                     let hmbSayisi = "@Url.Action("hmbSayisi", "Admin")?id=" + hmb.id;
@@ -126,13 +104,13 @@
 
                             $("#hamburgerler").append(
                                 `
-                                 <div class="mb-2 px-2 border rounded d-flex justify-content-end">
+                                <div class="mb-2 px-2 border rounded d-flex justify-content-end">
                                     <span class="me-auto">${hmb.ad}</span>
-                                    <a id="${hmb.id}">
+                                    <a id="${hmb.id}hmb">
                                         ${data}
                                     </a>
                                     <a onclick="hamburgerArttir('${hmb.id}')" class="ms-4"><i class="btn btn-primary fa-solid fa-plus"></i></a>
-                                    <a><i class="btn btn-primary ms-2 fa-solid fa-minus"></i></a>
+                                    <a onclick="hamburgerAzalt('${hmb.id}')"><i class="btn btn-primary ms-2 fa-solid fa-minus"></i></a>
                                 </div>
                                 `
                             )
@@ -140,6 +118,163 @@
                 }
             })
 
+
+         //içecekler fonksyionları
+         function icecekArttir(id) {
+             let url = "@Url.Action("MenuyeIcecekEkle", "Admin")?id=" + id;
+
+            fetch(url)
+                .then(res => res.text())
+                .then(data => {
+                    $('#'+id+'icecek').html(data);
+                })
+         }
+
+        //içecekler fonksyionları
+        function icecekAzalt(id) {
+            let url = "@Url.Action("MenudenIcecekCikar", "Admin")?id=" + id;
+
+            fetch(url)
+                .then(res => res.text())
+                .then(data => {
+                    $('#' + id + 'icecek').html(data);
+                })
+        }
+
+        //İçecekleri Listeleme
+        let icecekUrl = "@Url.Action("IcecekleriListele", "Admin")";
+        fetch(icecekUrl)
+            .then(res => res.json())
+            .then(data => {
+                $("#icecekler").html("");
+                $("#icecekler").append(`<h5 class="mb - 4">İçecekler</h5>`);
+                for (const icecek of data) {
+
+                    let icecekSayisi = "@Url.Action("icecekSayisi", "Admin")?id=" + icecek.id;
+                    fetch(icecekSayisi)
+                        .then(res => res.text())
+                        .then(data => {
+
+                            $("#icecekler").append(
+                                `
+                                <div class="mb-2 px-2 border rounded d-flex justify-content-end">
+                                    <span class="me-auto">${icecek.ad}</span>
+                                    <a id="${icecek.id}icecek">
+                                        ${data}
+                                    </a>
+                                    <a onclick="icecekArttir('${icecek.id}')" class="ms-4"><i class="btn btn-primary fa-solid fa-plus"></i></a>
+                                    <a onclick="icecekAzalt('${icecek.id}')"><i class="btn btn-primary ms-2 fa-solid fa-minus"></i></a>
+                                </div>
+                                `
+                            )
+                        });
+                }
+            })
+
+
+
+          //soslar fonksyionları
+          function sosArttir(id) {
+             let url = "@Url.Action("MenuyeSosEkle", "Admin")?id=" + id;
+
+            fetch(url)
+                .then(res => res.text())
+                .then(data => {
+                    $('#'+id+'sos').html(data);
+                })
+         }
+
+        //soslar fonksyionları
+        function sosAzalt(id) {
+            let url = "@Url.Action("MenudenSosCikar", "Admin")?id=" + id;
+
+            fetch(url)
+                .then(res => res.text())
+                .then(data => {
+                    $('#' + id + 'sos').html(data);
+                })
+        }
+
+        //sosları listeleme
+        let sosUrl = "@Url.Action("SoslariListele", "Admin")";
+        fetch(sosUrl)
+            .then(res => res.json())
+            .then(data => {
+                $("#soslar").html("");
+                $("#soslar").append(`<h5 class="mb - 4">Soslar</h5>`);
+                for (const sos of data) {
+
+                    let sosSayisi = "@Url.Action("sosSayisi", "Admin")?id=" + sos.id;
+                    fetch(sosSayisi)
+                        .then(res => res.text())
+                        .then(data => {
+
+                            $("#soslar").append(
+                                `
+                                <div class="mb-2 px-2 border rounded d-flex justify-content-end">
+                                    <span class="me-auto">${sos.ad}</span>
+                                    <a id="${sos.id}sos">
+                                        ${data}
+                                    </a>
+                                    <a onclick="sosArttir('${sos.id}')" class="ms-4"><i class="btn btn-primary fa-solid fa-plus"></i></a>
+                                    <a onclick="sosAzalt('${sos.id}')"><i class="btn btn-primary ms-2 fa-solid fa-minus"></i></a>
+                                </div>
+                                `
+                            )
+                        });
+                }
+            })
+
+            //ekstralar fonksyionları
+         function ekstraArttir(id) {
+             let url = "@Url.Action("MenuyeEkstraEkle", "Admin")?id=" + id;
+
+            fetch(url)
+                .then(res => res.text())
+                .then(data => {
+                    $('#'+id+'ekstra').html(data);
+                })
+         }
+
+        //ekstralar fonksyionları
+        function ekstraAzalt(id) {
+            let url = "@Url.Action("MenudenEkstraCikar", "Admin")?id=" + id;
+
+            fetch(url)
+                .then(res => res.text())
+                .then(data => {
+                    $('#' + id + 'ekstra').html(data);
+                })
+        }
+
+        //ekstraları Listeleme
+        let ekstraUrl = "@Url.Action("EkstralariListele", "Admin")";
+        fetch(ekstraUrl)
+            .then(res => res.json())
+            .then(data => {
+                $("#ekstralar").html("");
+                $("#ekstralar").append(`<h5 class="mb - 4">Ekstralar</h5>`);
+                for (const ekstra of data) {
+
+                    let ekstraSayisi = "@Url.Action("ekstraSayisi", "Admin")?id=" + ekstra.id;
+                    fetch(ekstraSayisi)
+                        .then(res => res.text())
+                        .then(data => {
+
+                            $("#ekstralar").append(
+                                `
+                                <div class="mb-2 px-2 border rounded d-flex justify-content-end">
+                                    <span class="me-auto">${ekstra.ad}</span>
+                                    <a id="${ekstra.id}ekstra">
+                                        ${data}
+                                    </a>
+                                    <a onclick="ekstraArttir('${ekstra.id}')" class="ms-4"><i class="btn btn-primary fa-solid fa-plus"></i></a>
+                                    <a onclick="ekstraAzalt('${ekstra.id}')"><i class="btn btn-primary ms-2 fa-solid fa-minus"></i></a>
+                                </div>
+                                `
+                            )
+                        });
+                }
+            })
     </script>
 }
-

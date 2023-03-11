@@ -148,12 +148,23 @@ namespace HamburgerProje.Controllers
             return View(vm);
         }
 
+        //----
+        #region Hamburger Metotları
         public int MenuyeHamburgerEkle(int id)
         {
             var hamburger = _db.Hamburgerler.Find(id);
             MenuViewModel.Hamburgerler.Add(hamburger);
 
-            
+
+            return hmbSayisi(id);
+        }
+
+        public int MenudenHamburgerCikar(int id)
+        {
+            var hamburger = _db.Hamburgerler.Find(id);
+            var index = MenuViewModel.Hamburgerler.FirstOrDefault(x => x.Id == id);
+            MenuViewModel.Hamburgerler.Remove(index);
+
             return hmbSayisi(id);
         }
 
@@ -168,42 +179,97 @@ namespace HamburgerProje.Controllers
             var sayi = MenuViewModel.Hamburgerler.Count(h => h.Id == id);
             return sayi;
         }
+        #endregion
+        //----
+        #region İçecek Metotları
 
-        public IActionResult MenuyeSosEkle(int menuId, int id)
-        {
-            var sos = _db.Soslar.Find(id);
-
-            var menu = _db.Menuler.Find(menuId);
-            menu.Soslar.Add(sos);
-            _db.SaveChanges();
-
-
-            return RedirectToAction("MenuOlustur", menu);
-        }
-
-        public IActionResult MenuyeIcecekEkle(int id, int menuId)
+        public int MenuyeIcecekEkle(int id)
         {
             var icecek = _db.Icecekler.Find(id);
+            MenuViewModel.Icecekler.Add(icecek);
 
-            var menu = _db.Menuler.Find(menuId);
-            menu.Icecekler.Add(icecek);
-            _db.SaveChanges();
-
-
-            return RedirectToAction("MenuOlustur", menu);
+            return icecekSayisi(id);
         }
 
-        public IActionResult MenuyeEkstraEkle(int id, int menuId)
+        public int MenudenIcecekCikar(int id)
+        {
+            var icecek = _db.Icecekler.Find(id);
+            var index = MenuViewModel.Icecekler.FirstOrDefault(x => x.Id == id);
+            MenuViewModel.Icecekler.Remove(index);
+
+            return icecekSayisi(id);
+        }
+        public IActionResult IcecekleriListele()
+        {
+            var icecekler = _db.Icecekler;
+            return Json(icecekler);
+        }
+        public int icecekSayisi(int id)
+        {
+            var sayi = MenuViewModel.Icecekler.Count(h => h.Id == id);
+            return sayi;
+        }
+        #endregion
+
+        //----
+        #region Sos Metotları
+        public int MenuyeSosEkle(int id)
+        {
+            var sos = _db.Soslar.Find(id);
+            MenuViewModel.Soslar.Add(sos);
+
+            return sosSayisi(id);
+        }
+
+        public int MenudenSosCikar(int id)
+        {
+            var sos = _db.Soslar.Find(id);
+            var index = MenuViewModel.Soslar.FirstOrDefault(x => x.Id == id);
+            MenuViewModel.Soslar.Remove(index);
+
+            return sosSayisi(id);
+        }
+        public IActionResult SoslariListele()
+        {
+            var soslar = _db.Soslar;
+            return Json(soslar);
+        }
+        public int sosSayisi(int id)
+        {
+            var sayi = MenuViewModel.Soslar.Count(h => h.Id == id);
+            return sayi;
+        }
+        #endregion
+
+        #region Ekstra Metotları
+        public int MenuyeEkstraEkle(int id)
         {
             var ekstra = _db.Ekstralar.Find(id);
+            MenuViewModel.Ekstralar.Add(ekstra);
 
-            var menu = _db.Menuler.Find(menuId);
-            menu.Ekstralar.Add(ekstra);
-            _db.SaveChanges();
-
-
-            return RedirectToAction("MenuOlustur", menu);
+            return ekstraSayisi(id);
         }
+
+        public int MenudenEkstraCikar(int id)
+        {
+            var ekstra = _db.Ekstralar.Find(id);
+            var index = MenuViewModel.Ekstralar.FirstOrDefault(x => x.Id == id);
+            MenuViewModel.Ekstralar.Remove(index);
+
+            return ekstraSayisi(id);
+        }
+        public IActionResult EkstralariListele()
+        {
+            var ekstralar = _db.Ekstralar;
+            return Json(ekstralar);
+        }
+        public int ekstraSayisi(int id)
+        {
+            var sayi = MenuViewModel.Ekstralar.Count(h => h.Id == id);
+            return sayi;
+        }
+        #endregion
+
 
 
         // action'a ek olarak menü id istiyecez. eğer menü id varsa o menüyü bulup içine ekle. menü id yoksa yeni menü oluştur
