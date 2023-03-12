@@ -1,6 +1,9 @@
 ﻿using HamburgerProje.Data;
+using HamburgerProje.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace HamburgerProje.Controllers
 {
@@ -15,6 +18,9 @@ namespace HamburgerProje.Controllers
         // GET: SiparisOlusturController
         public ActionResult Index()
         {
+            _db.HamburgerMenuler
+              .Include(x => x.Hamburger)
+              .Include(x => x.Menu);
             return View(_db);
         }
 

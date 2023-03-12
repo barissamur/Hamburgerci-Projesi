@@ -1,30 +1,38 @@
 ﻿@model UygulamaDbContext
 
+
 @{
     ViewData["Title"] = "Index";
 }
 <div class="container">
 
     <h3>Menüler</h3>
-    @*@foreach (var item in Model.Menuler)
+    @foreach (var item in Model.Menuler)
     {
-        <div class="d-flex">
-            <div>
-                <h5>@item.Ad</h5>
-                <p>
-                    @{
-                        string.Join(", ", item.Hamburgerler);
-                    }
+        <div class="w-75">
+            <div class="border d-flex">
+                <div class="p-2">
+                    <h5 class="">@item.Ad</h5>
 
-                </p>
-
-
-            </div>
-            <div>
-
+                    <p class="" style="width: 600px">
+                        @foreach (var hmb in item.HamburgerMenuler)
+                        {
+                            @hmb.Hamburger.Ad
+                        }
+                    </p>
+                    <h4 class="ms-5 text-info">@item.Fiyat.ToString("c2")</h4>
+                </div>
+                <div>
+                    <img class="me-auto" src="//picsum.photos/id/350/150" alt="Card image cap">
+                </div>
+                <div class="d-flex align-items-center">
+                    <a onclick="hamburgerArttir('${hmb.id}')" class="ms-4"><i class="btn btn-primary fa-solid fa-plus"></i></a>
+                    <a onclick="hamburgerAzalt('${hmb.id}')"><i class="btn btn-primary ms-2 fa-solid fa-minus"></i></a>
+                </div>
             </div>
         </div>
-    }*@
+
+    }
 
 </div>
 @section Scripts {

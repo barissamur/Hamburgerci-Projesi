@@ -1,4 +1,6 @@
-﻿namespace HamburgerProje.Models
+﻿using HamburgerProje.Data;
+
+namespace HamburgerProje.Models
 {
     public class DbViewModel
     {
@@ -7,6 +9,7 @@
         public IcecekViewModel? IcecekViewModel { get; set; } = null!;
         public SosViewModel? SosViewModel { get; set; } = null!;
         public MenuViewModel? MenuViewModel { get; set; } = null!;
+
 
     }
 }
