@@ -92,5 +92,45 @@ namespace HamburgerProje.Controllers
                 return View();
             }
         }
+
+        public IActionResult TumMenuler()
+        {
+            var menuler = _db.Menuler;
+
+            return Json(menuler);
+        }
+
+        public async Task<Dictionary<string, int>> Hm(int id)
+        {
+            List<string> hmbAdlar = new();
+            List<Hamburger> hmbler = new();
+
+            var tumHmbler = _db.Hamburgerler;
+            var hmler = await _db.HamburgerMenuler
+                .Include(x => x.Hamburger)
+                .Include(x => x.Menu)
+                .Where(m => m.MenuId == id).ToListAsync();
+
+
+
+            foreach (var item in hmler)
+            {
+                var hmbrgr = await tumHmbler.FirstOrDefaultAsync(x => x.Id == item.HamburgerId);
+                hmbler.Add(hmbrgr);
+            }
+
+            foreach (var item in hmbler)
+            {
+                hmbAdlar.Add(item.Ad);
+            }
+
+            Dictionary<string, int> grupSayisi;
+
+            grupSayisi = hmbAdlar
+             .GroupBy(x => x)
+             .ToDictionary(g => g.Key, g => g.Count());
+
+            return grupSayisi;
+        }
     }
 }

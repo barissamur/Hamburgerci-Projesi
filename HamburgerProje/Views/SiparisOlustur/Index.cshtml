@@ -6,35 +6,65 @@
 }
 <div class="container">
 
-    <h3>Menüler</h3>
-    @foreach (var item in Model.Menuler)
-    {
-        <div class="w-75">
-            <div class="border d-flex">
-                <div class="p-2">
-                    <h5 class="">@item.Ad</h5>
+    <h3 class="display-3" id="menuler">Menüler</h3>
 
-                    <p class="" style="width: 600px">
-                        @foreach (var hmb in item.HamburgerMenuler)
-                        {
-                            @hmb.Hamburger.Ad
-                        }
-                    </p>
-                    <h4 class="ms-5 text-info">@item.Fiyat.ToString("c2")</h4>
-                </div>
-                <div>
-                    <img class="me-auto" src="//picsum.photos/id/350/150" alt="Card image cap">
-                </div>
-                <div class="d-flex align-items-center">
-                    <a onclick="hamburgerArttir('${hmb.id}')" class="ms-4"><i class="btn btn-primary fa-solid fa-plus"></i></a>
-                    <a onclick="hamburgerAzalt('${hmb.id}')"><i class="btn btn-primary ms-2 fa-solid fa-minus"></i></a>
-                </div>
-            </div>
-        </div>
+  
 
-    }
+    @*ajax*@
+
 
 </div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+    let url = "@Url.Action("TumMenuler", "SiparisOlustur")";
+    fetch(url)
+        .then(res => res.json())
+        .then(data => {
+            $("#hamburgerler").html("");
+
+            for (const menu of data) {
+
+                let menuid = menu.id;
+
+                $("#menuler").append(
+                    `
+                    <div class="w-75">
+                        <div class="border d-flex">
+                            <div class="p-2">
+                                <h3 class="fw-bold">${menu.ad}</h3>
+
+                                <p id="${menu.id}icerik" class="fs-6" style="width: 600px">
+
+                                </p>
+                                <h4 class="ms-5 fw-bold text-info">${menu.fiyat.toLocaleString('tr-TR', { style: 'currency', currency: 'TRY' })}</h4>
+                            </div>
+                            <div>
+                                <img class="me-auto" src="//picsum.photos/id/350/150" alt="Card image cap">
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <a class="ms-4"><i class="btn btn-primary fa-solid fa-plus"></i></a>
+                                <a><i class="btn btn-primary ms-2 fa-solid fa-minus"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    `
+                );
+
+                let hmbUrl = "@Url.Action("Hm", "SiparisOlustur")?id=" + menuid;
+                fetch(hmbUrl)
+                    .then(res => res.json())
+                    .then(veri => {
+                        for (const key in veri) {
+                            $(`#${menu.id}icerik`).append(
+                                `
+                                     <p> ${veri[key]} adet ${key} </p>
+                                `
+                            )
+                        }
+                    })
+            }
+        })
+    </script>
 }
+
