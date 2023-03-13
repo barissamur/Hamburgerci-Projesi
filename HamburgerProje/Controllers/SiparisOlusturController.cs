@@ -21,7 +21,7 @@ namespace HamburgerProje.Controllers
         {
             if (TempData["GeciciSiparis"] == null)
                 return View(_db);
-            
+
 
             TempData["GeciciSiparis"] = JsonConvert
                   .DeserializeObject<SiparisViewModel>(TempData["GeciciSiparis"].ToString());
@@ -31,10 +31,11 @@ namespace HamburgerProje.Controllers
 
             TempData["GeciciSiparis"] = JsonConvert.SerializeObject(siparisVm);
 
-        
+
 
             return View();
         }
+        #region Sipariş Menu Metotları
 
         public int SipariseMenuEkle(int id)
         {
@@ -78,7 +79,6 @@ namespace HamburgerProje.Controllers
                 siparisVm.Menuler.Remove(menu);
                 TempData["GeciciSiparis"] = JsonConvert.SerializeObject(siparisVm);
             }
-            //MenuViewModel.Hamburgerler.Add(hamburger);
             return menuSayisi(id);
         }
 
@@ -99,6 +99,306 @@ namespace HamburgerProje.Controllers
             }
             return 0;
         }
+        #endregion
+
+        #region Sipariş Hamburger Metotları
+        public int SipariseHmbEkle(int id)
+        {
+            var hamburger = _db.Hamburgerler.Find(id);
+
+            if (TempData["GeciciSiparis"] == null)
+            {
+                var siparisVm = new SiparisViewModel();
+
+                siparisVm.Hamburgerler.Add(hamburger);
+
+                TempData["GeciciSiparis"] = JsonConvert.SerializeObject(siparisVm);
+            }
+
+            else
+            {
+                TempData["GeciciSiparis"] = JsonConvert
+                    .DeserializeObject<SiparisViewModel>(TempData["GeciciSiparis"].ToString());
+
+                SiparisViewModel siparisVm2 = (SiparisViewModel)TempData["GeciciSiparis"];
+
+                siparisVm2.Hamburgerler.Add(hamburger);
+                TempData["GeciciSiparis"] = JsonConvert.SerializeObject(siparisVm2);
+            }
+
+            return hmbSayisi(id);
+        }
+
+        public int SiparistenHmbCikar(int id)
+        {
+
+            if (TempData["GeciciSiparis"] != null)
+            {
+                TempData["GeciciSiparis"] = JsonConvert
+                    .DeserializeObject<SiparisViewModel>(TempData["GeciciSiparis"].ToString());
+
+                SiparisViewModel siparisVm = (SiparisViewModel)TempData["GeciciSiparis"];
+
+                var hamburger = siparisVm.Hamburgerler.FirstOrDefault(x => x.Id == id);
+
+                siparisVm.Hamburgerler.Remove(hamburger);
+                TempData["GeciciSiparis"] = JsonConvert.SerializeObject(siparisVm);
+            }
+            return hmbSayisi(id);
+        }
+
+
+        public int hmbSayisi(int id)
+        {
+            if (TempData["GeciciSiparis"] != null)
+            {
+
+                TempData["GeciciSiparis"] = JsonConvert
+                    .DeserializeObject<SiparisViewModel>(TempData["GeciciSiparis"].ToString());
+
+
+                SiparisViewModel siparisVm = (SiparisViewModel)TempData["GeciciSiparis"];
+
+                TempData["GeciciSiparis"] = JsonConvert.SerializeObject(siparisVm);
+
+                return siparisVm.Hamburgerler.Count(h => h.Id == id);
+            }
+            return 0;
+        }
+        #endregion
+
+        #region Sipariş İçecek Metotları
+        public int SipariseIcecekEkle(int id)
+        {
+            var icecek = _db.Icecekler.Find(id);
+
+            if (TempData["GeciciSiparis"] == null)
+            {
+                var siparisVm = new SiparisViewModel();
+
+                siparisVm.Icecekler.Add(icecek);
+
+                TempData["GeciciSiparis"] = JsonConvert.SerializeObject(siparisVm);
+            }
+
+            else
+            {
+                TempData["GeciciSiparis"] = JsonConvert
+                    .DeserializeObject<SiparisViewModel>(TempData["GeciciSiparis"].ToString());
+
+                SiparisViewModel siparisVm2 = (SiparisViewModel)TempData["GeciciSiparis"];
+
+                siparisVm2.Icecekler.Add(icecek);
+                TempData["GeciciSiparis"] = JsonConvert.SerializeObject(siparisVm2);
+            }
+
+            return icecekSayisi(id);
+        }
+
+        public int SiparistenIcecekCikar(int id)
+        {
+
+            if (TempData["GeciciSiparis"] != null)
+            {
+                TempData["GeciciSiparis"] = JsonConvert
+                    .DeserializeObject<SiparisViewModel>(TempData["GeciciSiparis"].ToString());
+
+                SiparisViewModel siparisVm = (SiparisViewModel)TempData["GeciciSiparis"];
+
+                var icecek = siparisVm.Icecekler.FirstOrDefault(x => x.Id == id);
+
+                siparisVm.Icecekler.Remove(icecek);
+                TempData["GeciciSiparis"] = JsonConvert.SerializeObject(siparisVm);
+            }
+            return icecekSayisi(id);
+        }
+
+
+        public int icecekSayisi(int id)
+        {
+            if (TempData["GeciciSiparis"] != null)
+            {
+
+                TempData["GeciciSiparis"] = JsonConvert
+                    .DeserializeObject<SiparisViewModel>(TempData["GeciciSiparis"].ToString());
+
+
+                SiparisViewModel siparisVm = (SiparisViewModel)TempData["GeciciSiparis"];
+
+                TempData["GeciciSiparis"] = JsonConvert.SerializeObject(siparisVm);
+
+                return siparisVm.Icecekler.Count(h => h.Id == id);
+            }
+            return 0;
+        }
+        #endregion
+
+        #region Sipariş Sos Metotları
+        public int SipariseSosEkle(int id)
+        {
+            var sos = _db.Soslar.Find(id);
+
+            if (TempData["GeciciSiparis"] == null)
+            {
+                var siparisVm = new SiparisViewModel();
+
+                siparisVm.Soslar.Add(sos);
+
+                TempData["GeciciSiparis"] = JsonConvert.SerializeObject(siparisVm);
+            }
+
+            else
+            {
+                TempData["GeciciSiparis"] = JsonConvert
+                    .DeserializeObject<SiparisViewModel>(TempData["GeciciSiparis"].ToString());
+
+                SiparisViewModel siparisVm2 = (SiparisViewModel)TempData["GeciciSiparis"];
+
+                siparisVm2.Soslar.Add(sos);
+                TempData["GeciciSiparis"] = JsonConvert.SerializeObject(siparisVm2);
+            }
+
+            return sosSayisi(id);
+        }
+
+        public int SiparistenSosCikar(int id)
+        {
+
+            if (TempData["GeciciSiparis"] != null)
+            {
+                TempData["GeciciSiparis"] = JsonConvert
+                    .DeserializeObject<SiparisViewModel>(TempData["GeciciSiparis"].ToString());
+
+                SiparisViewModel siparisVm = (SiparisViewModel)TempData["GeciciSiparis"];
+
+                var sos = siparisVm.Soslar.FirstOrDefault(x => x.Id == id);
+
+                siparisVm.Soslar.Remove(sos);
+                TempData["GeciciSiparis"] = JsonConvert.SerializeObject(siparisVm);
+            }
+            return sosSayisi(id);
+        }
+
+
+        public int sosSayisi(int id)
+        {
+            if (TempData["GeciciSiparis"] != null)
+            {
+
+                TempData["GeciciSiparis"] = JsonConvert
+                    .DeserializeObject<SiparisViewModel>(TempData["GeciciSiparis"].ToString());
+
+
+                SiparisViewModel siparisVm = (SiparisViewModel)TempData["GeciciSiparis"];
+
+                TempData["GeciciSiparis"] = JsonConvert.SerializeObject(siparisVm);
+
+                return siparisVm.Soslar.Count(h => h.Id == id);
+            }
+            return 0;
+        }
+        #endregion
+
+        #region Sipariş Ekstra Metotları
+        public int SipariseEkstraEkle(int id)
+        {
+            var ekstra = _db.Ekstralar.Find(id);
+
+            if (TempData["GeciciSiparis"] == null)
+            {
+                var siparisVm = new SiparisViewModel();
+
+                siparisVm.Ekstralar.Add(ekstra);
+
+                TempData["GeciciSiparis"] = JsonConvert.SerializeObject(siparisVm);
+            }
+
+            else
+            {
+                TempData["GeciciSiparis"] = JsonConvert
+                    .DeserializeObject<SiparisViewModel>(TempData["GeciciSiparis"].ToString());
+
+                SiparisViewModel siparisVm2 = (SiparisViewModel)TempData["GeciciSiparis"];
+
+                siparisVm2.Ekstralar.Add(ekstra);
+                TempData["GeciciSiparis"] = JsonConvert.SerializeObject(siparisVm2);
+            }
+
+            return ekstraSayisi(id);
+        }
+
+        public int SiparistenEkstraCikar(int id)
+        {
+
+            if (TempData["GeciciSiparis"] != null)
+            {
+                TempData["GeciciSiparis"] = JsonConvert
+                    .DeserializeObject<SiparisViewModel>(TempData["GeciciSiparis"].ToString());
+
+                SiparisViewModel siparisVm = (SiparisViewModel)TempData["GeciciSiparis"];
+
+                var ekstra = siparisVm.Ekstralar.FirstOrDefault(x => x.Id == id);
+
+                siparisVm.Ekstralar.Remove(ekstra);
+                TempData["GeciciSiparis"] = JsonConvert.SerializeObject(siparisVm);
+            }
+            return ekstraSayisi(id);
+        }
+
+
+        public int ekstraSayisi(int id)
+        {
+            if (TempData["GeciciSiparis"] != null)
+            {
+
+                TempData["GeciciSiparis"] = JsonConvert
+                    .DeserializeObject<SiparisViewModel>(TempData["GeciciSiparis"].ToString());
+
+
+                SiparisViewModel siparisVm = (SiparisViewModel)TempData["GeciciSiparis"];
+
+                TempData["GeciciSiparis"] = JsonConvert.SerializeObject(siparisVm);
+
+                return siparisVm.Ekstralar.Count(h => h.Id == id);
+            }
+            return 0;
+        }
+        #endregion
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         // GET: SiparisOlusturController/Details/5
         public ActionResult Details(int id)

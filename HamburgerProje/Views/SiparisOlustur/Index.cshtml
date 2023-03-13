@@ -6,42 +6,68 @@
 }
 <div class="container">
 
-    <h2 class="fw-bold my-5">Sipariş Oluştur</h2>
 
-    @*Menüler*@
-    <div class="mb-5 menuler card card-header w-75 ">
-        <h3 class="display-6" id="menuler"></h3>
-        @*ajax*@
+    <div class="row">
+        <div class="col-9">
+
+            <h2 class="fw-bold my-5">Sipariş Oluştur</h2>
+
+            @*Menüler*@
+            <div class="mb-5 menuler card card-header">
+                <h3 class="display-6" id="menuler"></h3>
+                @*ajax*@
+            </div>
+
+            @* Hamburgerler *@
+            <div class="mb-5 hamburgerler card card-header">
+                <h3 class="display-6" id="hamburgerler"></h3>
+                @*ajax*@
+            </div>
+
+            @* İçecekler *@
+            <div class="mb-5 icecekler card card-header">
+                <h3 class="display-6" id="icecekler"></h3>
+                @*ajax*@
+            </div>
+
+            @* Soslar *@
+            <div class="mb-5 soslar card card-header">
+                <h3 class="display-6" id="soslar"></h3>
+                @*ajax*@
+            </div>
+
+            @* Ekstralar *@
+            <div class="mb-5 ekstralar card card-header">
+                <h3 class="display-6" id="ekstralar"></h3>
+                @*ajax*@
+            </div>
+
+        </div>
+
+        <div class="col-3">
+            <ul class="position-fixed shadow list-group-item-action list-group list-group-flush" style="top:25%; width:500px">
+
+                <li class="list-group-item list-group-item-info list-group-item-action">  Sapien elit in malesuada semper mi, id sollicitudin urna fermentum.</li>
+                <li class="list-group-item list-group-item-info list-group-item-action">  Sapien elit in malesuada semper mi, id sollicitudin urna fermentum.</li>
+                <li class="list-group-item list-group-item-info list-group-item-action">  Sapien elit in malesuada semper mi, id sollicitudin urna fermentum.</li>
+                <li class="list-group-item list-group-item-info list-group-item-action">  Sapien elit in malesuada semper mi, id sollicitudin urna fermentum.</li>
+                <li class="list-group-item list-group-item-info list-group-item-action">  Sapien elit in malesuada semper mi, id sollicitudin urna fermentum.</li>
+                <li class="list-group-item list-group-item-info list-group-item-action">  Sapien elit in malesuada semper mi, id sollicitudin urna fermentum.</li>
+                <li class="list-group-item list-group-item-info list-group-item-action">  Sapien elit in malesuada semper mi, id sollicitudin urna fermentum.</li>
+                <li class="list-group-item list-group-item-info list-group-item-action">  Sapien elit in malesuada semper mi, id sollicitudin urna fermentum.</li>
+                <li class="list-group-item list-group-item-info list-group-item-action">  Sapien elit in malesuada semper mi, id sollicitudin urna fermentum.</li>
+            </ul>
+
+            <button onclick="sepeteEkle()" class="btn btn-outline-primary position-fixed" style="top:92%; right:110px;"><i class="fa-solid fa-cart-shopping me-1"></i>Sepete Ekle</button>
+
+        </div>
     </div>
 
-    @* Hamburgerler *@
-    <div class="mb-5 hamburgerler card card-header w-75 ">
-        <h3 class="display-6" id="hamburgerler"></h3>
-        @*ajax*@
-    </div>
-
-    @* İçecekler *@
-    <div class="mb-5 icecekler card card-header w-75 ">
-        <h3 class="display-6" id="icecekler"></h3>
-        @*ajax*@
-    </div>
-
-    @* Soslar *@
-    <div class="mb-5 soslar card card-header w-75 ">
-        <h3 class="display-6" id="soslar"></h3>
-        @*ajax*@
-    </div>
-
-    @* Ekstralar *@
-    <div class="mb-5 ekstralar card card-header w-75 ">
-        <h3 class="display-6" id="ekstralar"></h3>
-        @*ajax*@
-    </div>
 
 </div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-<script>
+    <script>
 
     //Menüleri listeliyoruz
     let url = "@Url.Action("TumMenuler", "SiparisOlustur")";
@@ -54,6 +80,7 @@
             for (const menu of data) {
 
                 let menuid = menu.id;
+
                 let menuSayisi = "@Url.Action("menuSayisi", "SiparisOlustur")?id=" + menuid;
                 fetch(menuSayisi)
                     .then(res => res.json())
@@ -183,33 +210,65 @@
 
             for (const hmb of data) {
 
-                $("#hamburgerler").append(
-                    `
-                    <div class="w-100 card card-header shadow mb-2">
-                        <div class="row p-2">
-                            <div class="p-2 col-xl-7">
-                                <h3 class="fw-bold text-info">${hmb.ad}</h3>
+                let hmbId = hmb.id;
+                let hmbSayisi = "@Url.Action("hmbSayisi", "SiparisOlustur")?id=" + hmbId;
+                fetch(hmbSayisi)
+                    .then(res => res.json())
+                    .then(veri => {
 
-                                <p id="${hmb.id}icerik" class="fs-6" style="width: 600px">
-                                 ${hmb.ad}
-                                </p>
-                                <h4 class="ms-5 fw-bold text-primary">${hmb.fiyat.toLocaleString('tr-TR', { style: 'currency', currency: 'TRY' })}</h4>
+                        $("#hamburgerler").append(
+                            `
+                            <div class="w-100 card card-header shadow mb-2">
+                                <div class="row p-2">
+                                    <div class="p-2 col-xl-7">
+                                        <h3 class="fw-bold text-info">${hmb.ad}</h3>
+
+                                        <p id="${hmb.id}icerik" class="fs-6" style="width: 600px">
+                                         ${hmb.ad}
+                                        </p>
+                                        <h4 class="ms-5 fw-bold text-primary">${hmb.fiyat.toLocaleString('tr-TR', { style: 'currency', currency: 'TRY' })}</h4>
+                                    </div>
+                                    <div class="col-xl">
+                                        <img class="me-auto mt-2" src="/img/${hmb.resim}" height="130" width="180" alt="Card image cap">
+                                    </div>
+                                    <div class="col-xl d-flex justify-content-between align-items-center">
+                                        <a onclick="hmbArttir('${hmb.id}')"><i class="btn btn-primary fa-solid fa-plus"></i></a>
+                                        <span class="fs-3 mt-2 fw-bold" id="${hmb.id}hmbAdet">${veri}</span>
+                                        <a onclick="hmbAzalt('${hmb.id}')"><i class="btn btn-primary fa-solid fa-minus"></i></a>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-xl">
-                                <img class="me-auto mt-2" src="/img/${hmb.resim}" height="130" width="180" alt="Card image cap">
-                            </div>
-                            <div class="col-xl d-flex justify-content-between align-items-center">
-                                <a class=""><i class="btn btn-primary fa-solid fa-plus"></i></a>
-                                <span class="fs-3 mt-2 fw-bold">${hmb.adet}</span>
-                                <a><i class="btn btn-primary fa-solid fa-minus"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    `
-                );
+                            `
+                        )
+                    });
             }
         })
     //Hamburgerleri listeliyoruz end
+
+
+    // Siparişe Hamburger ekleme
+    function hmbArttir(id) {
+            let url = "@Url.Action("SipariseHmbEkle", "SiparisOlustur")?id=" + id;
+
+            fetch(url)
+                .then(res => res.text())
+                .then(data => {
+                    $('#' + id +'hmbAdet').html(data);
+                })
+    }
+
+     // Siparişten Hamburger çıkar
+    function hmbAzalt(id) {
+             let url = "@Url.Action("SiparistenHmbCikar", "SiparisOlustur")?id=" + id;
+
+            fetch(url)
+                .then(res => res.text())
+                .then(data => {
+                    $('#' + id + 'hmbAdet').html(data);
+                })
+     }
+
+
 
     //İçecekleri listeliyoruz
     let icecekListesi = "@Url.Action("IcecekListesi", "SiparisOlustur")";
@@ -221,33 +280,62 @@
 
             for (const icecek of data) {
 
-                $("#icecekler").append(
-                    `
-                    <div class="w-100 card card-header shadow mb-2">
-                        <div class="row p-2">
-                            <div class="p-2 col-xl-7">
-                                <h3 class="fw-bold text-info">${icecek.ad}</h3>
+                let icecekId = icecek.id;
+                let icecekSayisi = "@Url.Action("icecekSayisi", "SiparisOlustur")?id=" + icecekId;
+                fetch(icecekSayisi)
+                    .then(res => res.json())
+                    .then(veri => {
 
-                                <p id="${icecek.id}icerik" class="fs-6" style="width: 600px">
-                                 ${icecek.ad}
-                                </p>
-                                <h4 class="ms-5 fw-bold text-primary">${icecek.fiyat.toLocaleString('tr-TR', { style: 'currency', currency: 'TRY' })}</h4>
+                        $("#icecekler").append(
+                            `
+                            <div class="w-100 card card-header shadow mb-2">
+                                <div class="row p-2">
+                                    <div class="p-2 col-xl-7">
+                                        <h3 class="fw-bold text-info">${icecek.ad}</h3>
+
+                                        <p id="${icecek.id}icerik" class="fs-6" style="width: 600px">
+                                         ${icecek.ad}
+                                        </p>
+                                        <h4 class="ms-5 fw-bold text-primary">${icecek.fiyat.toLocaleString('tr-TR', { style: 'currency', currency: 'TRY' })}</h4>
+                                    </div>
+                                    <div class="col-xl">
+                                        <img class="me-auto mt-2" src="/img/${icecek.resim}" height="130" width="180" alt="Card image cap">
+                                    </div>
+                                    <div class="col-xl d-flex justify-content-between align-items-center">
+                                        <a onclick="icecekArttir('${icecek.id}')" class=""><i class="btn btn-primary fa-solid fa-plus"></i></a>
+                                        <span class="fs-3 mt-2 fw-bold" id="${icecek.id}icecekAdet">${veri}</span>
+                                        <a onclick="icecekAzalt('${icecek.id}')" ><i class="btn btn-primary fa-solid fa-minus"></i></a>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-xl">
-                                <img class="me-auto mt-2" src="/img/${icecek.resim}" height="130" width="180" alt="Card image cap">
-                            </div>
-                            <div class="col-xl d-flex justify-content-between align-items-center">
-                                <a class=""><i class="btn btn-primary fa-solid fa-plus"></i></a>
-                                <span class="fs-3 mt-2 fw-bold">${icecek.adet}</span>
-                                <a><i class="btn btn-primary fa-solid fa-minus"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    `
-                );
+                            `
+                        );
+                    });
             }
         })
     //İçecekleri listeliyoruz son
+
+    // Siparişe İçecek ekleme
+    function icecekArttir(id) {
+            let url = "@Url.Action("SipariseIcecekEkle", "SiparisOlustur")?id=" + id;
+
+            fetch(url)
+                .then(res => res.text())
+                .then(data => {
+                    $('#' + id +'icecekAdet').html(data);
+                })
+    }
+
+     // Siparişten İçecek çıkar
+    function icecekAzalt(id) {
+             let url = "@Url.Action("SiparistenIcecekCikar", "SiparisOlustur")?id=" + id;
+
+            fetch(url)
+                .then(res => res.text())
+                .then(data => {
+                    $('#' + id + 'icecekAdet').html(data);
+                })
+     }
 
     //Sosları listeliyoruz
     let sosListesi = "@Url.Action("SosListesi", "SiparisOlustur")";
@@ -259,33 +347,63 @@
 
             for (const sos of data) {
 
-                $("#soslar").append(
-                    `
-                    <div class="w-100 card card-header shadow mb-2">
-                        <div class="row p-2">
-                            <div class="p-2 col-xl-7">
-                                <h3 class="fw-bold text-info">${sos.ad}</h3>
+                let sosId = sos.id;
+                let sosSayisi = "@Url.Action("sosSayisi", "SiparisOlustur")?id=" + sosId;
+                fetch(sosSayisi)
+                    .then(res => res.json())
+                    .then(veri => {
 
-                                <p id="${sos.id}icerik" class="fs-6" style="width: 600px">
-                                 ${sos.ad}
-                                </p>
-                                <h4 class="ms-5 fw-bold text-primary">${sos.fiyat.toLocaleString('tr-TR', { style: 'currency', currency: 'TRY' })}</h4>
+                        $("#soslar").append(
+                            `
+                            <div class="w-100 card card-header shadow mb-2">
+                                <div class="row p-2">
+                                    <div class="p-2 col-xl-7">
+                                        <h3 class="fw-bold text-info">${sos.ad}</h3>
+
+                                        <p id="${sos.id}icerik" class="fs-6" style="width: 600px">
+                                         ${sos.ad}
+                                        </p>
+                                        <h4 class="ms-5 fw-bold text-primary">${sos.fiyat.toLocaleString('tr-TR', { style: 'currency', currency: 'TRY' })}</h4>
+                                    </div>
+                                    <div class="col-xl">
+                                        <img class="me-auto mt-2" src="/img/${sos.resim}" height="130" width="180" alt="Card image cap">
+                                    </div>
+                                    <div class="col-xl d-flex justify-content-between align-items-center">
+                                        <a onclick="sosArttir('${sos.id}')" class=""><i class="btn btn-primary fa-solid fa-plus"></i></a>
+                                        <span class="fs-3 mt-2 fw-bold" id="${sos.id}sosAdet">${veri}</span>
+                                        <a onclick="sosAzalt('${sos.id}')"><i class="btn btn-primary fa-solid fa-minus"></i></a>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-xl">
-                                <img class="me-auto mt-2" src="/img/${sos.resim}" height="130" width="180" alt="Card image cap">
-                            </div>
-                            <div class="col-xl d-flex justify-content-between align-items-center">
-                                <a class=""><i class="btn btn-primary fa-solid fa-plus"></i></a>
-                                <span class="fs-3 mt-2 fw-bold">${sos.adet}</span>
-                                <a><i class="btn btn-primary fa-solid fa-minus"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    `
-                );
+                            `
+                        );
+                    })
             }
         })
      //Sosları listeliyoruz son
+
+     // Siparişe Sos ekleme
+    function sosArttir(id) {
+            let url = "@Url.Action("SipariseSosEkle", "SiparisOlustur")?id=" + id;
+
+            fetch(url)
+                .then(res => res.text())
+                .then(data => {
+                    $('#' + id +'sosAdet').html(data);
+                })
+    }
+
+     // Siparişten Sos çıkar
+    function sosAzalt(id) {
+             let url = "@Url.Action("SiparistenSosCikar", "SiparisOlustur")?id=" + id;
+
+            fetch(url)
+                .then(res => res.text())
+                .then(data => {
+                    $('#' + id + 'sosAdet').html(data);
+                })
+     }
+
 
     //Ekstra listeliyoruz
     let ekstraListesi = "@Url.Action("EkstraListesi", "SiparisOlustur")";
@@ -297,32 +415,64 @@
 
             for (const ekstra of data) {
 
-                $("#ekstralar").append(
-                    `
-                    <div class="w-100 card card-header shadow mb-2">
-                        <div class="row p-2">
-                            <div class="p-2 col-xl-7">
-                                <h3 class="fw-bold text-info">${ekstra.ad}</h3>
-                                <p id="${ekstra.id}icerik" class="fs-6" style="width: 600px">
-                                 ${ekstra.ad}
-                                </p>
-                                <h4 class="ms-5 fw-bold text-primary">${ekstra.fiyat.toLocaleString('tr-TR', { style: 'currency', currency: 'TRY' })}</h4>
+                let ekstraId = ekstra.id;
+                let ekstraSayisi = "@Url.Action("ekstraSayisi", "SiparisOlustur")?id=" + ekstraId;
+                fetch(ekstraSayisi)
+                    .then(res => res.json())
+                    .then(veri => {
+
+                        $("#ekstralar").append(
+                            `
+                            <div class="w-100 card card-header shadow mb-2">
+                                <div class="row p-2">
+                                    <div class="p-2 col-xl-7">
+                                        <h3 class="fw-bold text-info">${ekstra.ad}</h3>
+                                        <p id="${ekstra.id}icerik" class="fs-6" style="width: 600px">
+                                         ${ekstra.ad}
+                                        </p>
+                                        <h4 class="ms-5 fw-bold text-primary">${ekstra.fiyat.toLocaleString('tr-TR', { style: 'currency', currency: 'TRY' })}</h4>
+                                    </div>
+                                    <div class="col-xl">
+                                        <img class="me-auto mt-2" src="/img/${ekstra.resim}" height="130" width="180" alt="Card image cap">
+                                    </div>
+                                    <div class="col-xl d-flex justify-content-between align-items-center">
+                                        <a onclick="ekstraArttir('${ekstra.id}')"><i class="btn btn-primary fa-solid fa-plus"></i></a>
+                                        <span class="fs-3 mt-2 fw-bold" id="${ekstra.id}ekstraAdet">${veri}</span>
+                                        <a onclick="ekstraAzalt('${ekstra.id}')"><i class="btn btn-primary fa-solid fa-minus"></i></a>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-xl">
-                                <img class="me-auto mt-2" src="/img/${ekstra.resim}" height="130" width="180" alt="Card image cap">
-                            </div>
-                            <div class="col-xl d-flex justify-content-between align-items-center">
-                                <a><i class="btn btn-primary fa-solid fa-plus"></i></a>
-                                <span class="fs-3 mt-2 fw-bold">${ekstra.adet}</span>
-                                <a><i class="btn btn-primary fa-solid fa-minus"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    `
-                );
+                            `
+                        );
+                    })
             }
         })
-     //Ekstra listeliyoruz son
-</script>
+    //Ekstra listeliyoruz son
+
+    // Siparişe Ekstra ekleme
+    function ekstraArttir(id) {
+            let url = "@Url.Action("SipariseEkstraEkle", "SiparisOlustur")?id=" + id;
+
+            fetch(url)
+                .then(res => res.text())
+                .then(data => {
+                    $('#' + id +'ekstraAdet').html(data);
+                })
+    }
+
+        // Siparişten Ekstra çıkar
+    function ekstraAzalt(id) {
+            let url = "@Url.Action("SiparistenEkstraCikar", "SiparisOlustur")?id=" + id;
+
+            fetch(url)
+                .then(res => res.text())
+                .then(data => {
+                    $('#' + id + 'ekstraAdet').html(data);
+                })
+        }
+
+
+
+    </script>
 }
 
