@@ -6,6 +6,7 @@ namespace HamburgerProje.Models
     {
         public int Id { get; set; }
         public string Ad { get; set; } = null!;
+        public int Adet { get; set; }
         public double Fiyat { get; set; }
         public List<Menu> Menuler { get; set; } = new();
         public List<Siparis> Siparisler { get; set; } = new();

@@ -21,27 +21,37 @@ namespace HamburgerProje.Controllers
         }
         public IActionResult Index()
         {
-
+            TempData["GeciciMenu"] = null;
             return View();
         }
 
         public IActionResult MenuOlustur()
         {
+
             return View();
         }
 
         [HttpPost]
-        public IActionResult MenuOlustur(MenuViewModel menuVm)
+        public IActionResult MenuOlustur(MenuViewModel mVm)
         {
             var yeniMenu = new Menu();
             _db.Menuler.Add(yeniMenu);
             _db.SaveChanges();
 
-            yeniMenu.Ad = menuVm.Ad;
-            yeniMenu.Fiyat = menuVm.Fiyat;
+            TempData["GeciciMenu"] = JsonConvert
+                   .DeserializeObject<MenuViewModel>(TempData["GeciciMenu"].ToString());
 
-            var hmList = new List<HamburgerMenu>(); 
-            foreach (var item in MenuViewModel.Hamburgerler)
+
+            MenuViewModel menuVm = (MenuViewModel)TempData["GeciciMenu"];
+
+            TempData["GeciciMenu"] = null;
+
+
+            yeniMenu.Ad = mVm.Ad;
+            yeniMenu.Fiyat = mVm.Fiyat;
+
+            var hmList = new List<HamburgerMenu>();
+            foreach (var item in menuVm.Hamburgerler)
             {
                 var hm = new HamburgerMenu()
                 {
@@ -54,7 +64,7 @@ namespace HamburgerProje.Controllers
             _db.HamburgerMenuler.AddRange(hmList);
 
             var icList = new List<IcecekMenu>();
-            foreach (var item in MenuViewModel.Icecekler)
+            foreach (var item in menuVm.Icecekler)
             {
                 var ic = new IcecekMenu()
                 {
@@ -67,7 +77,7 @@ namespace HamburgerProje.Controllers
             _db.IcecekMenuler.AddRange(icList);
 
             var sosList = new List<SosMenu>();
-            foreach (var item in MenuViewModel.Soslar)
+            foreach (var item in menuVm.Soslar)
             {
                 var sos = new SosMenu()
                 {
@@ -80,7 +90,7 @@ namespace HamburgerProje.Controllers
             _db.SosMenuler.AddRange(sosList);
 
             var ekstraList = new List<EkstraMenu>();
-            foreach (var item in MenuViewModel.Ekstralar)
+            foreach (var item in menuVm.Ekstralar)
             {
                 var ekstra = new EkstraMenu()
                 {
@@ -92,6 +102,25 @@ namespace HamburgerProje.Controllers
             }
             _db.EkstraMenuler.AddRange(ekstraList);
 
+            //-----------------------------------------------------------------
+
+            if (ModelState.IsValid)
+            {
+                string dosyaAd = mVm.Resim.FileName;
+                string kayitYolu = Path.Combine(_env.WebRootPath, "img", dosyaAd); //  wwwroot / img // asset 16.jpg
+                using (var stream = new FileStream(kayitYolu, FileMode.OpenOrCreate))
+                {
+                    mVm.Resim.CopyTo(stream);
+                }
+
+                yeniMenu.Resim = dosyaAd;
+
+                _db.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+
+            //-----------------------------------------------------------------
             _db.SaveChanges();
 
             return View();
@@ -213,31 +242,71 @@ namespace HamburgerProje.Controllers
         public int MenuyeHamburgerEkle(int id)
         {
             var hamburger = _db.Hamburgerler.Find(id);
-            MenuViewModel.Hamburgerler.Add(hamburger);
 
+            if (TempData["GeciciMenu"] == null)
+            {
+                var menuVm = new MenuViewModel();
+
+                menuVm.Hamburgerler.Add(hamburger);
+
+                TempData["GeciciMenu"] = JsonConvert.SerializeObject(menuVm);
+            }
+
+            else
+            {
+                TempData["GeciciMenu"] = JsonConvert
+                    .DeserializeObject<MenuViewModel>(TempData["GeciciMenu"].ToString());
+
+                MenuViewModel menuVm2 = (MenuViewModel)TempData["GeciciMenu"];
+
+                menuVm2.Hamburgerler.Add(hamburger);
+                TempData["GeciciMenu"] = JsonConvert.SerializeObject(menuVm2);
+            }
 
             return hmbSayisi(id);
         }
+
 
         public int MenudenHamburgerCikar(int id)
         {
-            var hamburger = _db.Hamburgerler.Find(id);
-            var index = MenuViewModel.Hamburgerler.FirstOrDefault(x => x.Id == id);
-            MenuViewModel.Hamburgerler.Remove(index);
+            if (TempData["GeciciMenu"] != null)
+            {
+                TempData["GeciciMenu"] = JsonConvert
+                    .DeserializeObject<MenuViewModel>(TempData["GeciciMenu"].ToString());
 
+                MenuViewModel menuVm = (MenuViewModel)TempData["GeciciMenu"];
+
+                var hamburger = menuVm.Hamburgerler.FirstOrDefault(x => x.Id == id);
+
+                menuVm.Hamburgerler.Remove(hamburger);
+                TempData["GeciciMenu"] = JsonConvert.SerializeObject(menuVm);
+            }
+            //MenuViewModel.Hamburgerler.Add(hamburger);
             return hmbSayisi(id);
         }
 
-        public IActionResult HamburgerleriListele()
+        public async Task<IActionResult> HamburgerleriListele()
         {
-            var hamburgerler = _db.Hamburgerler;
+            var hamburgerler = await _db.Hamburgerler.OrderBy(x => x.Ad).ToListAsync();
             return Json(hamburgerler);
         }
 
         public int hmbSayisi(int id)
         {
-            var sayi = MenuViewModel.Hamburgerler.Count(h => h.Id == id);
-            return sayi;
+            if (TempData["GeciciMenu"] != null)
+            {
+
+                TempData["GeciciMenu"] = JsonConvert
+                    .DeserializeObject<MenuViewModel>(TempData["GeciciMenu"].ToString());
+
+
+                MenuViewModel menuVm = (MenuViewModel)TempData["GeciciMenu"];
+
+                TempData["GeciciMenu"] = JsonConvert.SerializeObject(menuVm);
+
+                return menuVm.Hamburgerler.Count(h => h.Id == id);
+            }
+            return 0;
         }
         #endregion
 
@@ -247,16 +316,45 @@ namespace HamburgerProje.Controllers
         public int MenuyeIcecekEkle(int id)
         {
             var icecek = _db.Icecekler.Find(id);
-            MenuViewModel.Icecekler.Add(icecek);
+
+            if (TempData["GeciciMenu"] == null)
+            {
+                var menuVm = new MenuViewModel();
+
+                menuVm.Icecekler.Add(icecek);
+
+                TempData["GeciciMenu"] = JsonConvert.SerializeObject(menuVm);
+            }
+
+            else
+            {
+                TempData["GeciciMenu"] = JsonConvert
+                    .DeserializeObject<MenuViewModel>(TempData["GeciciMenu"].ToString());
+
+                MenuViewModel menuVm2 = (MenuViewModel)TempData["GeciciMenu"];
+
+                menuVm2.Icecekler.Add(icecek);
+
+                TempData["GeciciMenu"] = JsonConvert.SerializeObject(menuVm2);
+            }
 
             return icecekSayisi(id);
         }
 
         public int MenudenIcecekCikar(int id)
         {
-            var icecek = _db.Icecekler.Find(id);
-            var index = MenuViewModel.Icecekler.FirstOrDefault(x => x.Id == id);
-            MenuViewModel.Icecekler.Remove(index);
+            if (TempData["GeciciMenu"] != null)
+            {
+                TempData["GeciciMenu"] = JsonConvert
+                    .DeserializeObject<MenuViewModel>(TempData["GeciciMenu"].ToString());
+
+                MenuViewModel menuVm = (MenuViewModel)TempData["GeciciMenu"];
+
+                var icecek = menuVm.Icecekler.FirstOrDefault(x => x.Id == id);
+
+                menuVm.Icecekler.Remove(icecek);
+                TempData["GeciciMenu"] = JsonConvert.SerializeObject(menuVm);
+            }
 
             return icecekSayisi(id);
         }
@@ -267,8 +365,20 @@ namespace HamburgerProje.Controllers
         }
         public int icecekSayisi(int id)
         {
-            var sayi = MenuViewModel.Icecekler.Count(h => h.Id == id);
-            return sayi;
+            if (TempData["GeciciMenu"] != null)
+            {
+
+                TempData["GeciciMenu"] = JsonConvert
+                    .DeserializeObject<MenuViewModel>(TempData["GeciciMenu"].ToString());
+
+
+                MenuViewModel menuVm = (MenuViewModel)TempData["GeciciMenu"];
+
+                TempData["GeciciMenu"] = JsonConvert.SerializeObject(menuVm);
+
+                return menuVm.Icecekler.Count(h => h.Id == id);
+            }
+            return 0;
         }
         #endregion
 
@@ -277,16 +387,43 @@ namespace HamburgerProje.Controllers
         public int MenuyeSosEkle(int id)
         {
             var sos = _db.Soslar.Find(id);
-            MenuViewModel.Soslar.Add(sos);
+            if (TempData["GeciciMenu"] == null)
+            {
+                var menuVm = new MenuViewModel();
+
+                menuVm.Soslar.Add(sos);
+
+                TempData["GeciciMenu"] = JsonConvert.SerializeObject(menuVm);
+            }
+
+            else
+            {
+                TempData["GeciciMenu"] = JsonConvert
+                    .DeserializeObject<MenuViewModel>(TempData["GeciciMenu"].ToString());
+
+                MenuViewModel menuVm2 = (MenuViewModel)TempData["GeciciMenu"];
+
+                menuVm2.Soslar.Add(sos);
+                TempData["GeciciMenu"] = JsonConvert.SerializeObject(menuVm2);
+            }
 
             return sosSayisi(id);
         }
 
         public int MenudenSosCikar(int id)
         {
-            var sos = _db.Soslar.Find(id);
-            var index = MenuViewModel.Soslar.FirstOrDefault(x => x.Id == id);
-            MenuViewModel.Soslar.Remove(index);
+            if (TempData["GeciciMenu"] != null)
+            {
+                TempData["GeciciMenu"] = JsonConvert
+                    .DeserializeObject<MenuViewModel>(TempData["GeciciMenu"].ToString());
+
+                MenuViewModel menuVm = (MenuViewModel)TempData["GeciciMenu"];
+
+                var sos = menuVm.Soslar.FirstOrDefault(x => x.Id == id);
+
+                menuVm.Soslar.Remove(sos);
+                TempData["GeciciMenu"] = JsonConvert.SerializeObject(menuVm);
+            }
 
             return sosSayisi(id);
         }
@@ -297,8 +434,20 @@ namespace HamburgerProje.Controllers
         }
         public int sosSayisi(int id)
         {
-            var sayi = MenuViewModel.Soslar.Count(h => h.Id == id);
-            return sayi;
+            if (TempData["GeciciMenu"] != null)
+            {
+
+                TempData["GeciciMenu"] = JsonConvert
+                    .DeserializeObject<MenuViewModel>(TempData["GeciciMenu"].ToString());
+
+
+                MenuViewModel menuVm = (MenuViewModel)TempData["GeciciMenu"];
+
+                TempData["GeciciMenu"] = JsonConvert.SerializeObject(menuVm);
+
+                return menuVm.Soslar.Count(h => h.Id == id);
+            }
+            return 0;
         }
         #endregion
 
@@ -307,16 +456,43 @@ namespace HamburgerProje.Controllers
         public int MenuyeEkstraEkle(int id)
         {
             var ekstra = _db.Ekstralar.Find(id);
-            MenuViewModel.Ekstralar.Add(ekstra);
+            if (TempData["GeciciMenu"] == null)
+            {
+                var menuVm = new MenuViewModel();
+
+                menuVm.Ekstralar.Add(ekstra);
+
+                TempData["GeciciMenu"] = JsonConvert.SerializeObject(menuVm);
+            }
+
+            else
+            {
+                TempData["GeciciMenu"] = JsonConvert
+                    .DeserializeObject<MenuViewModel>(TempData["GeciciMenu"].ToString());
+
+                MenuViewModel menuVm2 = (MenuViewModel)TempData["GeciciMenu"];
+
+                menuVm2.Ekstralar.Add(ekstra);
+                TempData["GeciciMenu"] = JsonConvert.SerializeObject(menuVm2);
+            }
 
             return ekstraSayisi(id);
         }
 
         public int MenudenEkstraCikar(int id)
         {
-            var ekstra = _db.Ekstralar.Find(id);
-            var index = MenuViewModel.Ekstralar.FirstOrDefault(x => x.Id == id);
-            MenuViewModel.Ekstralar.Remove(index);
+            if (TempData["GeciciMenu"] != null)
+            {
+                TempData["GeciciMenu"] = JsonConvert
+                    .DeserializeObject<MenuViewModel>(TempData["GeciciMenu"].ToString());
+
+                MenuViewModel menuVm = (MenuViewModel)TempData["GeciciMenu"];
+
+                var ekstra = menuVm.Ekstralar.FirstOrDefault(x => x.Id == id);
+
+                menuVm.Ekstralar.Remove(ekstra);
+                TempData["GeciciMenu"] = JsonConvert.SerializeObject(menuVm);
+            }
 
             return ekstraSayisi(id);
         }
@@ -327,8 +503,20 @@ namespace HamburgerProje.Controllers
         }
         public int ekstraSayisi(int id)
         {
-            var sayi = MenuViewModel.Ekstralar.Count(h => h.Id == id);
-            return sayi;
+            if (TempData["GeciciMenu"] != null)
+            {
+
+                TempData["GeciciMenu"] = JsonConvert
+                    .DeserializeObject<MenuViewModel>(TempData["GeciciMenu"].ToString());
+
+
+                MenuViewModel menuVm = (MenuViewModel)TempData["GeciciMenu"];
+
+                TempData["GeciciMenu"] = JsonConvert.SerializeObject(menuVm);
+
+                return menuVm.Ekstralar.Count(h => h.Id == id);
+            }
+            return 0;
         }
         #endregion
     }

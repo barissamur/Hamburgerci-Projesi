@@ -6,6 +6,7 @@
         public string Ad { get; set; } = null!;
         public double Fiyat { get; set; }
 
+        public int Adet { get; set; }
         public ICollection<EkstraMenu> EkstraMenuler { get; set; }
         public List<Siparis> Siparisler { get; set; } = new();
         public string? Resim { get; set; } = null!;

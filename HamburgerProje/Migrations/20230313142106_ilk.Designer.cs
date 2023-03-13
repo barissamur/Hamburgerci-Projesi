@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HamburgerProje.Migrations
 {
     [DbContext(typeof(UygulamaDbContext))]
-    [Migration("20230312094248_ilk")]
+    [Migration("20230313142106_ilk")]
     partial class ilk
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -49,6 +49,9 @@ namespace HamburgerProje.Migrations
                     b.Property<string>("Ad")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Adet")
+                        .HasColumnType("int");
 
                     b.Property<double>("Fiyat")
                         .HasColumnType("float");
@@ -96,6 +99,9 @@ namespace HamburgerProje.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Adet")
+                        .HasColumnType("int");
+
                     b.Property<double>("Fiyat")
                         .HasColumnType("float");
 
@@ -141,6 +147,9 @@ namespace HamburgerProje.Migrations
                     b.Property<string>("Ad")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Adet")
+                        .HasColumnType("int");
 
                     b.Property<double>("Fiyat")
                         .HasColumnType("float");
@@ -228,6 +237,9 @@ namespace HamburgerProje.Migrations
                     b.Property<string>("Ad")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Adet")
+                        .HasColumnType("int");
 
                     b.Property<double>("Fiyat")
                         .HasColumnType("float");

@@ -16,6 +16,7 @@ namespace HamburgerProje.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Ad = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Fiyat = table.Column<double>(type: "float", nullable: false),
+                    Adet = table.Column<int>(type: "int", nullable: false),
                     Resim = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -30,6 +31,7 @@ namespace HamburgerProje.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Ad = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Adet = table.Column<int>(type: "int", nullable: false),
                     Fiyat = table.Column<double>(type: "float", nullable: false),
                     Resim = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -45,6 +47,7 @@ namespace HamburgerProje.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Ad = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Adet = table.Column<int>(type: "int", nullable: false),
                     Fiyat = table.Column<double>(type: "float", nullable: false),
                     Resim = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -89,6 +92,7 @@ namespace HamburgerProje.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Ad = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Adet = table.Column<int>(type: "int", nullable: false),
                     Fiyat = table.Column<double>(type: "float", nullable: false),
                     Resim = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },

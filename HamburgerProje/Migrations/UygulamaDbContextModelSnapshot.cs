@@ -48,6 +48,9 @@ namespace HamburgerProje.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Adet")
+                        .HasColumnType("int");
+
                     b.Property<double>("Fiyat")
                         .HasColumnType("float");
 
@@ -94,6 +97,9 @@ namespace HamburgerProje.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Adet")
+                        .HasColumnType("int");
+
                     b.Property<double>("Fiyat")
                         .HasColumnType("float");
 
@@ -139,6 +145,9 @@ namespace HamburgerProje.Migrations
                     b.Property<string>("Ad")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Adet")
+                        .HasColumnType("int");
 
                     b.Property<double>("Fiyat")
                         .HasColumnType("float");
@@ -226,6 +235,9 @@ namespace HamburgerProje.Migrations
                     b.Property<string>("Ad")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Adet")
+                        .HasColumnType("int");
 
                     b.Property<double>("Fiyat")
                         .HasColumnType("float");

@@ -6,22 +6,50 @@
 }
 <div class="container">
 
-    <h3 class="display-3" id="menuler">Menüler</h3>
+    <h2 class="fw-bold my-5">Sipariş Oluştur</h2>
 
-  
+    @*Menüler*@
+    <div class="mb-5 menuler card card-header w-75 ">
+        <h3 class="display-6" id="menuler"></h3>
+        @*ajax*@
+    </div>
 
-    @*ajax*@
+    @* Hamburgerler *@
+    <div class="mb-5 hamburgerler card card-header w-75 ">
+        <h3 class="display-6" id="hamburgerler"></h3>
+        @*ajax*@
+    </div>
 
+    @* İçecekler *@
+    <div class="mb-5 icecekler card card-header w-75 ">
+        <h3 class="display-6" id="icecekler"></h3>
+        @*ajax*@
+    </div>
+
+    @* Soslar *@
+    <div class="mb-5 soslar card card-header w-75 ">
+        <h3 class="display-6" id="soslar"></h3>
+        @*ajax*@
+    </div>
+
+    @* Ekstralar *@
+    <div class="mb-5 ekstralar card card-header w-75 ">
+        <h3 class="display-6" id="ekstralar"></h3>
+        @*ajax*@
+    </div>
 
 </div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script>
+<script>
+
+    //Menüleri listeliyoruz
     let url = "@Url.Action("TumMenuler", "SiparisOlustur")";
     fetch(url)
         .then(res => res.json())
         .then(data => {
-            $("#hamburgerler").html("");
+            $("#menuler").html("");
+            $("#menuler").append("Menüler");
 
             for (const menu of data) {
 
@@ -29,42 +57,242 @@
 
                 $("#menuler").append(
                     `
-                    <div class="w-75">
-                        <div class="border d-flex">
-                            <div class="p-2">
-                                <h3 class="fw-bold">${menu.ad}</h3>
+                    <div class="w-100 card card-header shadow mb-2">
+                        <div class="row p-2">
+                            <div class="p-2 col-xl-7">
+                                <h3 class="fw-bold text-info">${menu.ad}</h3>
 
                                 <p id="${menu.id}icerik" class="fs-6" style="width: 600px">
 
                                 </p>
-                                <h4 class="ms-5 fw-bold text-info">${menu.fiyat.toLocaleString('tr-TR', { style: 'currency', currency: 'TRY' })}</h4>
+                                <h4 class="ms-5 fw-bold text-primary">${menu.fiyat.toLocaleString('tr-TR', { style: 'currency', currency: 'TRY' })}</h4>
                             </div>
-                            <div>
-                                <img class="me-auto" src="//picsum.photos/id/350/150" alt="Card image cap">
+                            <div class="col-xl">
+                                <img class="me-auto mt-2" src="/img/${menu.resim}" height="130" width="180" alt="Card image cap">
                             </div>
-                            <div class="d-flex align-items-center">
-                                <a class="ms-4"><i class="btn btn-primary fa-solid fa-plus"></i></a>
-                                <a><i class="btn btn-primary ms-2 fa-solid fa-minus"></i></a>
+                            <div class="col-xl d-flex justify-content-between align-items-center">
+                                <a class=""><i class="btn btn-primary fa-solid fa-plus"></i></a>
+                                <span class="fs-3 mt-2 fw-bold">${menu.adet}</span>
+                                <a><i class="btn btn-primary fa-solid fa-minus"></i></a>
                             </div>
                         </div>
                     </div>
                     `
                 );
 
-                let hmbUrl = "@Url.Action("Hm", "SiparisOlustur")?id=" + menuid;
+                let hmbUrl = "@Url.Action("Hmler", "SiparisOlustur")?id=" + menuid;
                 fetch(hmbUrl)
                     .then(res => res.json())
                     .then(veri => {
                         for (const key in veri) {
                             $(`#${menu.id}icerik`).append(
                                 `
-                                     <p> ${veri[key]} adet ${key} </p>
+                                     <span> ${veri[key]} adet ${key}, </span>
                                 `
                             )
                         }
+
+                        let sosUrl = "@Url.Action("Soslar", "SiparisOlustur")?id=" + menuid;
+                        fetch(sosUrl)
+                            .then(res => res.json())
+                            .then(veri => {
+                                for (const key in veri) {
+                                    $(`#${menu.id}icerik`).append(
+                                        `
+                                             <span> ${veri[key]} adet ${key}, </span>
+
+                                        `
+                                    )
+                                }
+
+                                $(`#${menu.id}icerik`).append(
+                                    `<br>`
+                                )
+
+                                let icecekUrl = "@Url.Action("Icecekler", "SiparisOlustur")?id=" + menuid;
+                                fetch(icecekUrl)
+                                    .then(res => res.json())
+                                    .then(veri => {
+                                        for (const key in veri) {
+                                            $(`#${menu.id}icerik`).append(
+                                                `
+                                                     <span> ${veri[key]} adet ${key}, </span>
+
+                                                `
+                                            )
+                                        }
+
+                                        let ekstraUrl = "@Url.Action("Ekstralar", "SiparisOlustur")?id=" + menuid;
+                                        fetch(ekstraUrl)
+                                            .then(res => res.json())
+                                            .then(veri => {
+                                                for (const key in veri) {
+                                                    $(`#${menu.id}icerik`).append(
+                                                        `
+                                                             <span> ${veri[key]} adet ${key}, </span>
+
+                                                        `
+                                                    )
+                                                }
+                                            })
+                                    })
+                            })
                     })
             }
         })
-    </script>
+    //Menüleri listeliyoruz end
+
+    //Hamburgerleri listeliyoruz
+    let hamburgerListesi = "@Url.Action("HamburgerListesi", "SiparisOlustur")";
+    fetch(hamburgerListesi)
+        .then(res => res.json())
+        .then(data => {
+            $("#hamburgerler").html("");
+            $("#hamburgerler").append("Hamburgerler");
+
+            for (const hmb of data) {
+
+                $("#hamburgerler").append(
+                    `
+                    <div class="w-100 card card-header shadow mb-2">
+                        <div class="row p-2">
+                            <div class="p-2 col-xl-7">
+                                <h3 class="fw-bold text-info">${hmb.ad}</h3>
+
+                                <p id="${hmb.id}icerik" class="fs-6" style="width: 600px">
+                                 ${hmb.ad}
+                                </p>
+                                <h4 class="ms-5 fw-bold text-primary">${hmb.fiyat.toLocaleString('tr-TR', { style: 'currency', currency: 'TRY' })}</h4>
+                            </div>
+                            <div class="col-xl">
+                                <img class="me-auto mt-2" src="/img/${hmb.resim}" height="130" width="180" alt="Card image cap">
+                            </div>
+                            <div class="col-xl d-flex justify-content-between align-items-center">
+                                <a class=""><i class="btn btn-primary fa-solid fa-plus"></i></a>
+                                <span class="fs-3 mt-2 fw-bold">${hmb.adet}</span>
+                                <a><i class="btn btn-primary fa-solid fa-minus"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    `
+                );
+            }
+        })
+    //Hamburgerleri listeliyoruz end
+
+    //İçecekleri listeliyoruz
+    let icecekListesi = "@Url.Action("IcecekListesi", "SiparisOlustur")";
+    fetch(icecekListesi)
+        .then(res => res.json())
+        .then(data => {
+            $("#icecekler").html("");
+            $("#icecekler").append("İçecekler");
+
+            for (const icecek of data) {
+
+                $("#icecekler").append(
+                    `
+                    <div class="w-100 card card-header shadow mb-2">
+                        <div class="row p-2">
+                            <div class="p-2 col-xl-7">
+                                <h3 class="fw-bold text-info">${icecek.ad}</h3>
+
+                                <p id="${icecek.id}icerik" class="fs-6" style="width: 600px">
+                                 ${icecek.ad}
+                                </p>
+                                <h4 class="ms-5 fw-bold text-primary">${icecek.fiyat.toLocaleString('tr-TR', { style: 'currency', currency: 'TRY' })}</h4>
+                            </div>
+                            <div class="col-xl">
+                                <img class="me-auto mt-2" src="/img/${icecek.resim}" height="130" width="180" alt="Card image cap">
+                            </div>
+                            <div class="col-xl d-flex justify-content-between align-items-center">
+                                <a class=""><i class="btn btn-primary fa-solid fa-plus"></i></a>
+                                <span class="fs-3 mt-2 fw-bold">${icecek.adet}</span>
+                                <a><i class="btn btn-primary fa-solid fa-minus"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    `
+                );
+            }
+        })
+    //İçecekleri listeliyoruz son
+
+    //Sosları listeliyoruz
+    let sosListesi = "@Url.Action("SosListesi", "SiparisOlustur")";
+    fetch(sosListesi)
+        .then(res => res.json())
+        .then(data => {
+            $("#soslar").html("");
+            $("#soslar").append("Soslar");
+
+            for (const sos of data) {
+
+                $("#soslar").append(
+                    `
+                    <div class="w-100 card card-header shadow mb-2">
+                        <div class="row p-2">
+                            <div class="p-2 col-xl-7">
+                                <h3 class="fw-bold text-info">${sos.ad}</h3>
+
+                                <p id="${sos.id}icerik" class="fs-6" style="width: 600px">
+                                 ${sos.ad}
+                                </p>
+                                <h4 class="ms-5 fw-bold text-primary">${sos.fiyat.toLocaleString('tr-TR', { style: 'currency', currency: 'TRY' })}</h4>
+                            </div>
+                            <div class="col-xl">
+                                <img class="me-auto mt-2" src="/img/${sos.resim}" height="130" width="180" alt="Card image cap">
+                            </div>
+                            <div class="col-xl d-flex justify-content-between align-items-center">
+                                <a class=""><i class="btn btn-primary fa-solid fa-plus"></i></a>
+                                <span class="fs-3 mt-2 fw-bold">${sos.adet}</span>
+                                <a><i class="btn btn-primary fa-solid fa-minus"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    `
+                );
+            }
+        })
+     //Sosları listeliyoruz son
+
+    //Ekstra listeliyoruz
+    let ekstraListesi = "@Url.Action("EkstraListesi", "SiparisOlustur")";
+    fetch(ekstraListesi)
+        .then(res => res.json())
+        .then(data => {
+            $("#ekstralar").html("");
+            $("#ekstralar").append("Ekstralar");
+
+            for (const ekstra of data) {
+
+                $("#ekstralar").append(
+                    `
+                    <div class="w-100 card card-header shadow mb-2">
+                        <div class="row p-2">
+                            <div class="p-2 col-xl-7">
+                                <h3 class="fw-bold text-info">${ekstra.ad}</h3>
+
+                                <p id="${ekstra.id}icerik" class="fs-6" style="width: 600px">
+                                 ${ekstra.ad}
+                                </p>
+                                <h4 class="ms-5 fw-bold text-primary">${ekstra.fiyat.toLocaleString('tr-TR', { style: 'currency', currency: 'TRY' })}</h4>
+                            </div>
+                            <div class="col-xl">
+                                <img class="me-auto mt-2" src="/img/${ekstra.resim}" height="130" width="180" alt="Card image cap">
+                            </div>
+                            <div class="col-xl d-flex justify-content-between align-items-center">
+                                <a><i class="btn btn-primary fa-solid fa-plus"></i></a>
+                                <span class="fs-3 mt-2 fw-bold">${ekstra.adet}</span>
+                                <a><i class="btn btn-primary fa-solid fa-minus"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    `
+                );
+            }
+        })
+     //Ekstra listeliyoruz son
+</script>
 }
 
