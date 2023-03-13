@@ -366,7 +366,21 @@ namespace HamburgerProje.Controllers
         #endregion
 
 
+        #region Sipariş Listesi
 
+        public IActionResult SiparisListesi()
+        {
+            TempData["GeciciSiparis"] = JsonConvert
+                  .DeserializeObject<SiparisViewModel>(TempData["GeciciSiparis"].ToString());
+
+            SiparisViewModel siparisVm = (SiparisViewModel)TempData["GeciciSiparis"];
+
+            TempData["GeciciSiparis"] = JsonConvert.SerializeObject(siparisVm);
+
+            return Json(siparisVm);
+        }
+
+        #endregion
 
 
 
