@@ -27,7 +27,7 @@ namespace HamburgerProje.Controllers
 
         public IActionResult MenuOlustur()
         {
-
+            TempData["GeciciMenu"] = null;
             return View();
         }
 

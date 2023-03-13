@@ -54,31 +54,36 @@
             for (const menu of data) {
 
                 let menuid = menu.id;
+                let menuSayisi = "@Url.Action("menuSayisi", "SiparisOlustur")?id=" + menuid;
+                fetch(menuSayisi)
+                    .then(res => res.json())
+                    .then(veri => {
+                        $("#menuler").append(
+                            `
+                            <div class="w-100 card card-header shadow mb-2">
+                                <div class="row p-2">
+                                    <div class="p-2 col-xl-7">
+                                        <h3 class="fw-bold text-info">${menu.ad}</h3>
 
-                $("#menuler").append(
-                    `
-                    <div class="w-100 card card-header shadow mb-2">
-                        <div class="row p-2">
-                            <div class="p-2 col-xl-7">
-                                <h3 class="fw-bold text-info">${menu.ad}</h3>
+                                        <p id="${menu.id}icerik" class="fs-6" style="width: 600px">
 
-                                <p id="${menu.id}icerik" class="fs-6" style="width: 600px">
+                                        </p>
+                                        <h4 class="ms-5 fw-bold text-primary">${menu.fiyat.toLocaleString('tr-TR', { style: 'currency', currency: 'TRY' })}</h4>
+                                    </div>
+                                    <div class="col-xl">
+                                        <img class="me-auto mt-2" src="/img/${menu.resim}" height="130" width="180" alt="Card image cap">
+                                    </div>
+                                    <div class="col-xl d-flex justify-content-between align-items-center">
+                                        <a onclick="menuArttir('${menu.id}')" class=""><i class="btn btn-primary fa-solid fa-plus"></i></a>
+                                        <span class="fs-3 mt-2 fw-bold" id="${menu.id}menuAdet">${veri}</span>
+                                        <a onclick="menuAzalt('${menu.id}')"><i class="btn btn-primary fa-solid fa-minus"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            `
+                        );
+                    })
 
-                                </p>
-                                <h4 class="ms-5 fw-bold text-primary">${menu.fiyat.toLocaleString('tr-TR', { style: 'currency', currency: 'TRY' })}</h4>
-                            </div>
-                            <div class="col-xl">
-                                <img class="me-auto mt-2" src="/img/${menu.resim}" height="130" width="180" alt="Card image cap">
-                            </div>
-                            <div class="col-xl d-flex justify-content-between align-items-center">
-                                <a class=""><i class="btn btn-primary fa-solid fa-plus"></i></a>
-                                <span class="fs-3 mt-2 fw-bold">${menu.adet}</span>
-                                <a><i class="btn btn-primary fa-solid fa-minus"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    `
-                );
 
                 let hmbUrl = "@Url.Action("Hmler", "SiparisOlustur")?id=" + menuid;
                 fetch(hmbUrl)
@@ -141,6 +146,32 @@
             }
         })
     //Menüleri listeliyoruz end
+
+    // Siparişe Menü ekleme
+    function menuArttir(id) {
+            let url = "@Url.Action("SipariseMenuEkle", "SiparisOlustur")?id=" + id;
+
+            fetch(url)
+                .then(res => res.text())
+                .then(data => {
+                    $('#' + id +'menuAdet').html(data);
+                })
+    }
+
+     // Siparişten Menü çıkar
+    function menuAzalt(id) {
+             let url = "@Url.Action("SiparistenMenuCikar", "SiparisOlustur")?id=" + id;
+
+            fetch(url)
+                .then(res => res.text())
+                .then(data => {
+                    $('#' + id +'menuAdet').html(data);
+                })
+     }
+
+
+    // Siparişe Menü ekleme end
+
 
     //Hamburgerleri listeliyoruz
     let hamburgerListesi = "@Url.Action("HamburgerListesi", "SiparisOlustur")";
@@ -272,7 +303,6 @@
                         <div class="row p-2">
                             <div class="p-2 col-xl-7">
                                 <h3 class="fw-bold text-info">${ekstra.ad}</h3>
-
                                 <p id="${ekstra.id}icerik" class="fs-6" style="width: 600px">
                                  ${ekstra.ad}
                                 </p>

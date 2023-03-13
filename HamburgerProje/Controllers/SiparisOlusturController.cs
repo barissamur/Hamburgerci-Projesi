@@ -3,6 +3,7 @@ using HamburgerProje.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 
 namespace HamburgerProje.Controllers
@@ -18,10 +19,85 @@ namespace HamburgerProje.Controllers
         // GET: SiparisOlusturController
         public ActionResult Index()
         {
-            _db.HamburgerMenuler
-              .Include(x => x.Hamburger)
-              .Include(x => x.Menu);
-            return View(_db);
+            if (TempData["GeciciSiparis"] == null)
+                return View(_db);
+            
+
+            TempData["GeciciSiparis"] = JsonConvert
+                  .DeserializeObject<SiparisViewModel>(TempData["GeciciSiparis"].ToString());
+
+
+            SiparisViewModel siparisVm = (SiparisViewModel)TempData["GeciciSiparis"];
+
+            TempData["GeciciSiparis"] = JsonConvert.SerializeObject(siparisVm);
+
+        
+
+            return View();
+        }
+
+        public int SipariseMenuEkle(int id)
+        {
+            var menu = _db.Menuler.Find(id);
+
+            if (TempData["GeciciSiparis"] == null)
+            {
+                var siparisVm = new SiparisViewModel();
+
+                siparisVm.Menuler.Add(menu);
+
+                TempData["GeciciSiparis"] = JsonConvert.SerializeObject(siparisVm);
+            }
+
+            else
+            {
+                TempData["GeciciSiparis"] = JsonConvert
+                    .DeserializeObject<SiparisViewModel>(TempData["GeciciSiparis"].ToString());
+
+                SiparisViewModel siparisVm2 = (SiparisViewModel)TempData["GeciciSiparis"];
+
+                siparisVm2.Menuler.Add(menu);
+                TempData["GeciciSiparis"] = JsonConvert.SerializeObject(siparisVm2);
+            }
+
+            return menuSayisi(id);
+        }
+
+        public int SiparistenMenuCikar(int id)
+        {
+
+            if (TempData["GeciciSiparis"] != null)
+            {
+                TempData["GeciciSiparis"] = JsonConvert
+                    .DeserializeObject<SiparisViewModel>(TempData["GeciciSiparis"].ToString());
+
+                SiparisViewModel siparisVm = (SiparisViewModel)TempData["GeciciSiparis"];
+
+                var menu = siparisVm.Menuler.FirstOrDefault(x => x.Id == id);
+
+                siparisVm.Menuler.Remove(menu);
+                TempData["GeciciSiparis"] = JsonConvert.SerializeObject(siparisVm);
+            }
+            //MenuViewModel.Hamburgerler.Add(hamburger);
+            return menuSayisi(id);
+        }
+
+        public int menuSayisi(int id)
+        {
+            if (TempData["GeciciSiparis"] != null)
+            {
+
+                TempData["GeciciSiparis"] = JsonConvert
+                    .DeserializeObject<SiparisViewModel>(TempData["GeciciSiparis"].ToString());
+
+
+                SiparisViewModel siparisVm = (SiparisViewModel)TempData["GeciciSiparis"];
+
+                TempData["GeciciSiparis"] = JsonConvert.SerializeObject(siparisVm);
+
+                return siparisVm.Menuler.Count(h => h.Id == id);
+            }
+            return 0;
         }
 
         // GET: SiparisOlusturController/Details/5

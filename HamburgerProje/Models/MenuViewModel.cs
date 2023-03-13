@@ -16,7 +16,5 @@ namespace HamburgerProje.Models
         public List<Ekstra> Ekstralar { get; set; } = new();
         public List<Siparis> Siparisler { get; set; } = new();
         public IFormFile Resim { get; set; } = null!;
-        public int VarMi { get; set; } = 0;
-       
     }
 }
