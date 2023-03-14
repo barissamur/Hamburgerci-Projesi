@@ -31,8 +31,6 @@ namespace HamburgerProje.Controllers
 
             TempData["GeciciSiparis"] = JsonConvert.SerializeObject(siparisVm);
 
-
-
             return View();
         }
         #region Sipariş Menu Metotları
@@ -367,121 +365,228 @@ namespace HamburgerProje.Controllers
 
 
         #region Sipariş Listesi
-
         public IActionResult SiparisListesi()
         {
-            TempData["GeciciSiparis"] = JsonConvert
-                  .DeserializeObject<SiparisViewModel>(TempData["GeciciSiparis"].ToString());
+            if (TempData["GeciciSiparis"] != null)
+            {
 
-            SiparisViewModel siparisVm = (SiparisViewModel)TempData["GeciciSiparis"];
+                TempData["GeciciSiparis"] = JsonConvert
+                      .DeserializeObject<SiparisViewModel>(TempData["GeciciSiparis"].ToString());
 
-            TempData["GeciciSiparis"] = JsonConvert.SerializeObject(siparisVm);
+                SiparisViewModel siparisVm = (SiparisViewModel)TempData["GeciciSiparis"];
 
-            return Json(siparisVm);
+                TempData["GeciciSiparis"] = JsonConvert.SerializeObject(siparisVm);
+                return Json(siparisVm);
+            }
+            return null;
+
         }
-
         #endregion
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        // GET: SiparisOlusturController/Details/5
-        public ActionResult Details(int id)
+        public IActionResult SepettenSeciliEkstraCikar(int id)
         {
-            return View();
-        }
 
-        // GET: SiparisOlusturController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
 
-        // POST: SiparisOlusturController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
+            if (TempData["GeciciSiparis"] != null)
             {
-                return RedirectToAction(nameof(Index));
+                TempData["GeciciSiparis"] = JsonConvert
+                                          .DeserializeObject<SiparisViewModel>(TempData["GeciciSiparis"].ToString());
+
+                SiparisViewModel siparisVm = (SiparisViewModel)TempData["GeciciSiparis"];
+
+
+                var liste = siparisVm.Ekstralar.Where(x => x.Id == id).ToList();
+
+                foreach (var item in liste)
+                {
+                    siparisVm.Ekstralar.Remove(item);
+                }
+
+                TempData["GeciciSiparis"] = JsonConvert.SerializeObject(siparisVm);
+
+                return Json(siparisVm);
             }
-            catch
-            {
-                return View();
-            }
+            return null!;
         }
 
-        // GET: SiparisOlusturController/Edit/5
-        public ActionResult Edit(int id)
+
+        public IActionResult SepettenSeciliMenuCikar(int id)
         {
-            return View();
+            if (TempData["GeciciSiparis"] != null)
+            {
+
+                TempData["GeciciSiparis"] = JsonConvert
+                                      .DeserializeObject<SiparisViewModel>(TempData["GeciciSiparis"].ToString());
+
+                SiparisViewModel siparisVm = (SiparisViewModel)TempData["GeciciSiparis"];
+
+
+                var liste = siparisVm.Menuler.Where(x => x.Id == id).ToList();
+
+                foreach (var item in liste)
+                {
+                    siparisVm.Menuler.Remove(item);
+                }
+
+                TempData["GeciciSiparis"] = JsonConvert.SerializeObject(siparisVm);
+
+                return Json(siparisVm);
+            }
+            return null!;
         }
 
-        // POST: SiparisOlusturController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+
+        public IActionResult SepettenSeciliSosCikar(int id)
         {
-            try
+            if (TempData["GeciciSiparis"] != null)
             {
-                return RedirectToAction(nameof(Index));
+                TempData["GeciciSiparis"] = JsonConvert
+                                  .DeserializeObject<SiparisViewModel>(TempData["GeciciSiparis"].ToString());
+
+                SiparisViewModel siparisVm = (SiparisViewModel)TempData["GeciciSiparis"];
+
+
+                var liste = siparisVm.Soslar.Where(x => x.Id == id).ToList();
+
+                foreach (var item in liste)
+                {
+                    siparisVm.Soslar.Remove(item);
+                }
+
+                TempData["GeciciSiparis"] = JsonConvert.SerializeObject(siparisVm);
+
+                return Json(siparisVm);
             }
-            catch
-            {
-                return View();
-            }
+            return null!;
         }
 
-        // GET: SiparisOlusturController/Delete/5
-        public ActionResult Delete(int id)
+        public IActionResult SepettenSeciliIcecekCikar(int id)
         {
-            return View();
+            if (TempData["GeciciSiparis"] != null)
+            {
+                TempData["GeciciSiparis"] = JsonConvert
+                                  .DeserializeObject<SiparisViewModel>(TempData["GeciciSiparis"].ToString());
+
+                SiparisViewModel siparisVm = (SiparisViewModel)TempData["GeciciSiparis"];
+
+
+                var liste = siparisVm.Icecekler.Where(x => x.Id == id).ToList();
+
+                foreach (var item in liste)
+                {
+                    siparisVm.Icecekler.Remove(item);
+                }
+
+                TempData["GeciciSiparis"] = JsonConvert.SerializeObject(siparisVm);
+
+                return Json(siparisVm);
+            }
+            return null!;
         }
 
-        // POST: SiparisOlusturController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public IActionResult SepettenSeciliHmbCikar(int id)
         {
-            try
+            if (TempData["GeciciSiparis"] != null)
             {
-                return RedirectToAction(nameof(Index));
+                TempData["GeciciSiparis"] = JsonConvert
+                                  .DeserializeObject<SiparisViewModel>(TempData["GeciciSiparis"].ToString());
+
+                SiparisViewModel siparisVm = (SiparisViewModel)TempData["GeciciSiparis"];
+
+
+                var liste = siparisVm.Hamburgerler.Where(x => x.Id == id).ToList();
+
+                foreach (var item in liste)
+                {
+                    siparisVm.Hamburgerler.Remove(item);
+                }
+
+                TempData["GeciciSiparis"] = JsonConvert.SerializeObject(siparisVm);
+
+                return Json(siparisVm);
             }
-            catch
-            {
-                return View();
-            }
+            return null!;
         }
+
+        public void SepetiBosalt()
+        {
+            TempData["GeciciSiparis"] = null;
+        }
+
+        public string SepetDoluMu()
+        {
+
+            if (TempData["GeciciSiparis"] != null)
+            {
+                TempData["GeciciSiparis"] = JsonConvert
+                                 .DeserializeObject<SiparisViewModel>(TempData["GeciciSiparis"].ToString());
+
+                SiparisViewModel siparisVm = (SiparisViewModel)TempData["GeciciSiparis"];
+                TempData["GeciciSiparis"] = JsonConvert.SerializeObject(siparisVm);
+
+                return "1";
+            }
+
+            else
+            {
+                return "0";
+            }
+
+        }
+
+        public string IcerikVarMi()
+        {
+            if (TempData["GeciciSiparis"] != null)
+            {
+
+                TempData["GeciciSiparis"] = JsonConvert
+                                     .DeserializeObject<SiparisViewModel>(TempData["GeciciSiparis"].ToString());
+
+                SiparisViewModel siparisVm = (SiparisViewModel)TempData["GeciciSiparis"];
+
+                TempData["GeciciSiparis"] = JsonConvert.SerializeObject(siparisVm);
+
+
+                if (siparisVm.Menuler.Count == 0 &&
+                    siparisVm.Hamburgerler.Count == 0 &&
+                    siparisVm.Icecekler.Count == 0 &&
+                    siparisVm.Ekstralar.Count == 0 &&
+                    siparisVm.Soslar.Count == 0)
+                    return "1";
+
+                else
+                    return "0";
+            }
+
+            return "1";
+        }
+
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         public IActionResult TumMenuler()
         {
