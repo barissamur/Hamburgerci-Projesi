@@ -7,7 +7,7 @@
         public int Adet { get; set; }
         public double Fiyat { get; set; }
         public ICollection<HamburgerMenu> HamburgerMenuler { get; set; }
-        public List<Siparis> Siparisler { get; set; } = new();
+        public List<HamburgerSiparis> HamburgerSiparisler { get; set; } = new();
         public string? Resim { get; set; } = null!;
 
     }

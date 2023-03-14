@@ -1,0 +1,140 @@
+﻿
+@{
+}
+<div class="container">
+
+    <div class="row" style="margin-top:150px">
+
+        <div id="menuler"></div>
+        <div id="hamburgerler"></div>
+        <div id="icecekler"></div>
+        <div id="ekstralar"></div>
+        <div id="soslar"></div>
+
+
+
+
+
+
+    </div>
+
+
+
+</div>
+
+@section Scripts{ 
+    <script>
+    menuleriListele();
+    hamburgerleriListele();
+    icecekleriListele();
+        soslariListele();
+        ekstralariListele();
+
+
+    //Sepetteki Menüleri listeliyoruz
+    function menuleriListele() {
+    let url = "@Url.Action("SepettekiMenuler", "Sepet")";
+
+    fetch(url)
+        .then(res => res.json())
+        .then(veri => {
+            $("#menuler").html("");
+            $("#menuler").append("Menüler");
+
+            for (const key in veri) {
+                $(`#menuler`).append(
+                    `
+                    <p> ${veri[key]} adet ${key}, </p>
+                    `
+                )
+            }
+        })
+    }
+    //Sepetteki Menüleri listeliyoruz end
+
+    //Sepetteki Hamburgerleri listeliyoruz
+    function hamburgerleriListele() {
+    let url = "@Url.Action("SepettekiHamburgerler", "Sepet")";
+
+    fetch(url)
+        .then(res => res.json())
+        .then(veri => {
+            $("#hamburgerler").html("");
+            $("#hamburgerler").append("Hamburgerler");
+
+            for (const key in veri) {
+                $(`#hamburgerler`).append(
+                    `
+                    <p> ${veri[key]} adet ${key}, </p>
+                    `
+                )
+            }
+        })
+    }
+    //Sepetteki Hamburgerleri listeliyoruz end
+
+    //Sepetteki İçecekleri listeliyoruz
+    function icecekleriListele() {
+    let url = "@Url.Action("SepettekiIcecekler", "Sepet")";
+
+    fetch(url)
+        .then(res => res.json())
+        .then(veri => {
+            $("#icecekler").html("");
+            $("#icecekler").append("İçecekler");
+
+            for (const key in veri) {
+                $(`#icecekler`).append(
+                    `
+                    <p> ${veri[key]} adet ${key}, </p>
+                    `
+                )
+            }
+        })
+    }
+    //Sepetteki İçecekleri listeliyoruz end
+
+    //Sepetteki Sosları listeliyoruz
+        function soslariListele() {
+    let url = "@Url.Action("SepettekiSoslar", "Sepet")";
+
+    fetch(url)
+        .then(res => res.json())
+        .then(veri => {
+            $("#soslar").html("");
+            $("#soslar").append("Soslar");
+
+            for (const key in veri) {
+                $(`#soslar`).append(
+                    `
+                    <p> ${veri[key]} adet ${key}, </p>
+                    `
+                )
+            }
+        })
+    }
+    //Sepetteki Sosları listeliyoruz end
+
+
+    //Sepetteki Ekstralari listeliyoruz
+    function ekstralariListele() {
+    let url = "@Url.Action("SepettekiEkstralar", "Sepet")";
+
+    fetch(url)
+        .then(res => res.json())
+        .then(veri => {
+            $("#ekstralar").html("");
+            $("#ekstralar").append("Ekstralar");
+
+            for (const key in veri) {
+                $(`#ekstralar`).append(
+                    `
+                    <p> ${veri[key]} adet ${key}, </p>
+                    `
+                )
+            }
+        })
+    }
+    //Sepetteki Ekstralari listeliyoruz end
+    </script>
+}

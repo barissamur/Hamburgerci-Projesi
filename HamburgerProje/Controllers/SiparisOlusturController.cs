@@ -511,6 +511,13 @@ namespace HamburgerProje.Controllers
         public void SepetiBosalt()
         {
             TempData["GeciciSiparis"] = null;
+
+            var siparis = _db.Siparisler.FirstOrDefault(x => x.OdendiMi == false);
+            if (siparis != null)
+            {
+                _db.Siparisler.Remove(siparis);
+                _db.SaveChanges();
+            }
         }
 
         public string SepetDoluMu()
@@ -560,34 +567,6 @@ namespace HamburgerProje.Controllers
 
             return "1";
         }
-
-      
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         public IActionResult TumMenuler()
         {
             var menuler = _db.Menuler;
@@ -741,6 +720,111 @@ namespace HamburgerProje.Controllers
         public IActionResult EkstraListesi()
         {
             return Json(_db.Ekstralar);
+        }
+
+        public IActionResult SiparisOlustur()
+        {
+            if (TempData["GeciciSiparis"] != null)
+            {
+                TempData["GeciciSiparis"] = JsonConvert
+                                 .DeserializeObject<SiparisViewModel>(TempData["GeciciSiparis"].ToString());
+
+                SiparisViewModel siparisVm = (SiparisViewModel)TempData["GeciciSiparis"];
+                TempData["GeciciSiparis"] = JsonConvert.SerializeObject(siparisVm);
+
+                #region sipariş new'ledik
+                //    var siparis = new Siparis();
+                //    _db.Siparisler.Add(siparis);
+                //    _db.SaveChanges();
+
+                //    var ekstraList = new List<EkstraSiparis>();
+                //    foreach (var item in siparisVm.Ekstralar)
+                //    {
+                //        var ekstra = new EkstraSiparis()
+                //        {
+                //            EkstraId = item.Id,
+                //            SiparisId = siparis.Id
+                //        };
+
+                //        ekstraList.Add(ekstra);
+                //    }
+                //    _db.EkstraSiparisler.AddRange(ekstraList);
+
+                //    var hamburgerList = new List<HamburgerSiparis>();
+                //    foreach (var item in siparisVm.Hamburgerler)
+                //    {
+                //        var hamburger = new HamburgerSiparis()
+                //        {
+                //            HamburgerId = item.Id,
+                //            SiparisId = siparis.Id
+                //        };
+
+                //        hamburgerList.Add(hamburger);
+                //    }
+                //    _db.HamburgerSiparisler.AddRange(hamburgerList);
+
+                //    var sosList = new List<SosSiparis>();
+                //    foreach (var item in siparisVm.Soslar)
+                //    {
+                //        var sos = new SosSiparis()
+                //        {
+                //            SosId = item.Id,
+                //            SiparisId = siparis.Id
+                //        };
+
+                //        sosList.Add(sos);
+                //    }
+                //    _db.SosSiparisler.AddRange(sosList);
+
+                //    var icecekList = new List<IcecekSiparis>();
+                //    foreach (var item in siparisVm.Icecekler)
+                //    {
+                //        var icecek = new IcecekSiparis()
+                //        {
+                //            IcecekId = item.Id,
+                //            SiparisId = siparis.Id
+                //        };
+
+                //        icecekList.Add(icecek);
+                //    }
+                //    _db.IcecekSiparisler.AddRange(icecekList);
+
+                //    var menuList = new List<MenuSiparis>();
+                //    foreach (var item in siparisVm.Menuler)
+                //    {
+                //        var menu = new MenuSiparis()
+                //        {
+                //            MenuId = item.Id,
+                //            SiparisId = siparis.Id
+                //        };
+
+                //        menuList.Add(menu);
+                //    }
+                //    _db.MenuSiparisler.AddRange(menuList);
+
+
+                //    var hmblerToplamFiyat = siparisVm.Hamburgerler.Sum(x => x.Fiyat);
+                //    var menulerToplamFiyat = siparisVm.Menuler.Sum(x => x.Fiyat);
+                //    var soslarToplamFiyat = siparisVm.Soslar.Sum(x => x.Fiyat);
+                //    var ekstralarToplamFiyat = siparisVm.Ekstralar.Sum(x => x.Fiyat);
+                //    var iceceklerToplamFiyat = siparisVm.Icecekler.Sum(x => x.Fiyat);
+
+                //    var siparisToplamFiyat = hmblerToplamFiyat + menulerToplamFiyat + soslarToplamFiyat + ekstralarToplamFiyat + iceceklerToplamFiyat;
+                //    siparis.Toplam = siparisToplamFiyat;
+
+                //    _db.SaveChanges();
+
+                //    var siparisId = siparis.Id;
+
+                //    return RedirectToAction("Index", "Sepet", new { siparisId });
+                //}
+
+                //return RedirectToAction("Index"); 
+                #endregion
+            }
+
+            return RedirectToAction("Index", "Sepet");
+
         }
     }
 }

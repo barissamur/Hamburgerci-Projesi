@@ -8,7 +8,7 @@
 
         public int Adet { get; set; }
         public ICollection<EkstraMenu> EkstraMenuler { get; set; }
-        public List<Siparis> Siparisler { get; set; } = new();
+        public List<EkstraSiparis> EkstraSiparisler { get; set; } = new();
         public string? Resim { get; set; } = null!;
 
 

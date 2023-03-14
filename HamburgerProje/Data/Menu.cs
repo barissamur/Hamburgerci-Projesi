@@ -13,7 +13,8 @@ namespace HamburgerProje.Data
         public List<SosMenu> SosMenuler { get; set; }
         public List<EkstraMenu> EkstraMenuler { get; set; } = new();
 
-        public List<Siparis> Siparisler { get; set; }
+        public List<MenuSiparis> MenuSiparisler { get; set; } = new();
+
         public string? Resim { get; set; } = null!;
 
     }

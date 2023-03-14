@@ -78,7 +78,8 @@ namespace HamburgerProje.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Toplam = table.Column<double>(type: "float", nullable: false)
+                    Toplam = table.Column<double>(type: "float", nullable: false),
+                    OdendiMi = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -180,121 +181,105 @@ namespace HamburgerProje.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EkstraSiparis",
+                name: "EkstraSiparisler",
                 columns: table => new
                 {
-                    EkstralarId = table.Column<int>(type: "int", nullable: false),
-                    SiparislerId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EkstraId = table.Column<int>(type: "int", nullable: false),
+                    SiparisId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EkstraSiparis", x => new { x.EkstralarId, x.SiparislerId });
+                    table.PrimaryKey("PK_EkstraSiparisler", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EkstraSiparis_Ekstralar_EkstralarId",
-                        column: x => x.EkstralarId,
+                        name: "FK_EkstraSiparisler_Ekstralar_EkstraId",
+                        column: x => x.EkstraId,
                         principalTable: "Ekstralar",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_EkstraSiparis_Siparisler_SiparislerId",
-                        column: x => x.SiparislerId,
+                        name: "FK_EkstraSiparisler_Siparisler_SiparisId",
+                        column: x => x.SiparisId,
                         principalTable: "Siparisler",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "HamburgerSiparis",
+                name: "HamburgerSiparisler",
                 columns: table => new
                 {
-                    HamburgerlerId = table.Column<int>(type: "int", nullable: false),
-                    SiparislerId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    HamburgerId = table.Column<int>(type: "int", nullable: false),
+                    SiparisId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_HamburgerSiparis", x => new { x.HamburgerlerId, x.SiparislerId });
+                    table.PrimaryKey("PK_HamburgerSiparisler", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_HamburgerSiparis_Hamburgerler_HamburgerlerId",
-                        column: x => x.HamburgerlerId,
+                        name: "FK_HamburgerSiparisler_Hamburgerler_HamburgerId",
+                        column: x => x.HamburgerId,
                         principalTable: "Hamburgerler",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_HamburgerSiparis_Siparisler_SiparislerId",
-                        column: x => x.SiparislerId,
+                        name: "FK_HamburgerSiparisler_Siparisler_SiparisId",
+                        column: x => x.SiparisId,
                         principalTable: "Siparisler",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "IcecekSiparis",
+                name: "IcecekSiparisler",
                 columns: table => new
                 {
-                    IceceklerId = table.Column<int>(type: "int", nullable: false),
-                    SiparislerId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IcecekId = table.Column<int>(type: "int", nullable: false),
+                    SiparisId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_IcecekSiparis", x => new { x.IceceklerId, x.SiparislerId });
+                    table.PrimaryKey("PK_IcecekSiparisler", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_IcecekSiparis_Icecekler_IceceklerId",
-                        column: x => x.IceceklerId,
+                        name: "FK_IcecekSiparisler_Icecekler_IcecekId",
+                        column: x => x.IcecekId,
                         principalTable: "Icecekler",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_IcecekSiparis_Siparisler_SiparislerId",
-                        column: x => x.SiparislerId,
+                        name: "FK_IcecekSiparisler_Siparisler_SiparisId",
+                        column: x => x.SiparisId,
                         principalTable: "Siparisler",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "MenuSiparis",
+                name: "MenuSiparisler",
                 columns: table => new
                 {
-                    MenulerId = table.Column<int>(type: "int", nullable: false),
-                    SiparislerId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MenuId = table.Column<int>(type: "int", nullable: false),
+                    SiparisId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MenuSiparis", x => new { x.MenulerId, x.SiparislerId });
+                    table.PrimaryKey("PK_MenuSiparisler", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_MenuSiparis_Menuler_MenulerId",
-                        column: x => x.MenulerId,
+                        name: "FK_MenuSiparisler_Menuler_MenuId",
+                        column: x => x.MenuId,
                         principalTable: "Menuler",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_MenuSiparis_Siparisler_SiparislerId",
-                        column: x => x.SiparislerId,
+                        name: "FK_MenuSiparisler_Siparisler_SiparisId",
+                        column: x => x.SiparisId,
                         principalTable: "Siparisler",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SiparisSos",
-                columns: table => new
-                {
-                    SiparislerId = table.Column<int>(type: "int", nullable: false),
-                    SoslarId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SiparisSos", x => new { x.SiparislerId, x.SoslarId });
-                    table.ForeignKey(
-                        name: "FK_SiparisSos_Siparisler_SiparislerId",
-                        column: x => x.SiparislerId,
-                        principalTable: "Siparisler",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_SiparisSos_Soslar_SoslarId",
-                        column: x => x.SoslarId,
-                        principalTable: "Soslar",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -325,6 +310,32 @@ namespace HamburgerProje.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "SosSiparisler",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SosId = table.Column<int>(type: "int", nullable: false),
+                    SiparisId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SosSiparisler", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SosSiparisler_Siparisler_SiparisId",
+                        column: x => x.SiparisId,
+                        principalTable: "Siparisler",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_SosSiparisler_Soslar_SosId",
+                        column: x => x.SosId,
+                        principalTable: "Soslar",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_EkstraMenuler_EkstraId",
                 table: "EkstraMenuler",
@@ -336,9 +347,14 @@ namespace HamburgerProje.Migrations
                 column: "MenuId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EkstraSiparis_SiparislerId",
-                table: "EkstraSiparis",
-                column: "SiparislerId");
+                name: "IX_EkstraSiparisler_EkstraId",
+                table: "EkstraSiparisler",
+                column: "EkstraId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EkstraSiparisler_SiparisId",
+                table: "EkstraSiparisler",
+                column: "SiparisId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_HamburgerMenuler_HamburgerId",
@@ -351,9 +367,14 @@ namespace HamburgerProje.Migrations
                 column: "MenuId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_HamburgerSiparis_SiparislerId",
-                table: "HamburgerSiparis",
-                column: "SiparislerId");
+                name: "IX_HamburgerSiparisler_HamburgerId",
+                table: "HamburgerSiparisler",
+                column: "HamburgerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_HamburgerSiparisler_SiparisId",
+                table: "HamburgerSiparisler",
+                column: "SiparisId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_IcecekMenuler_IcecekId",
@@ -366,19 +387,24 @@ namespace HamburgerProje.Migrations
                 column: "MenuId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_IcecekSiparis_SiparislerId",
-                table: "IcecekSiparis",
-                column: "SiparislerId");
+                name: "IX_IcecekSiparisler_IcecekId",
+                table: "IcecekSiparisler",
+                column: "IcecekId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MenuSiparis_SiparislerId",
-                table: "MenuSiparis",
-                column: "SiparislerId");
+                name: "IX_IcecekSiparisler_SiparisId",
+                table: "IcecekSiparisler",
+                column: "SiparisId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SiparisSos_SoslarId",
-                table: "SiparisSos",
-                column: "SoslarId");
+                name: "IX_MenuSiparisler_MenuId",
+                table: "MenuSiparisler",
+                column: "MenuId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MenuSiparisler_SiparisId",
+                table: "MenuSiparisler",
+                column: "SiparisId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SosMenuler_MenuId",
@@ -389,6 +415,16 @@ namespace HamburgerProje.Migrations
                 name: "IX_SosMenuler_SosId",
                 table: "SosMenuler",
                 column: "SosId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SosSiparisler_SiparisId",
+                table: "SosSiparisler",
+                column: "SiparisId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SosSiparisler_SosId",
+                table: "SosSiparisler",
+                column: "SosId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -397,28 +433,28 @@ namespace HamburgerProje.Migrations
                 name: "EkstraMenuler");
 
             migrationBuilder.DropTable(
-                name: "EkstraSiparis");
+                name: "EkstraSiparisler");
 
             migrationBuilder.DropTable(
                 name: "HamburgerMenuler");
 
             migrationBuilder.DropTable(
-                name: "HamburgerSiparis");
+                name: "HamburgerSiparisler");
 
             migrationBuilder.DropTable(
                 name: "IcecekMenuler");
 
             migrationBuilder.DropTable(
-                name: "IcecekSiparis");
+                name: "IcecekSiparisler");
 
             migrationBuilder.DropTable(
-                name: "MenuSiparis");
-
-            migrationBuilder.DropTable(
-                name: "SiparisSos");
+                name: "MenuSiparisler");
 
             migrationBuilder.DropTable(
                 name: "SosMenuler");
+
+            migrationBuilder.DropTable(
+                name: "SosSiparisler");
 
             migrationBuilder.DropTable(
                 name: "Ekstralar");
@@ -430,10 +466,10 @@ namespace HamburgerProje.Migrations
                 name: "Icecekler");
 
             migrationBuilder.DropTable(
-                name: "Siparisler");
+                name: "Menuler");
 
             migrationBuilder.DropTable(
-                name: "Menuler");
+                name: "Siparisler");
 
             migrationBuilder.DropTable(
                 name: "Soslar");

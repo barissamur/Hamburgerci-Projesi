@@ -19,5 +19,10 @@ namespace HamburgerProje.Data
         public DbSet<SosMenu> SosMenuler => Set<SosMenu>();
         public DbSet<EkstraMenu> EkstraMenuler => Set<EkstraMenu>();
         public DbSet<IcecekMenu> IcecekMenuler => Set<IcecekMenu>();
+        public DbSet<MenuSiparis> MenuSiparisler => Set<MenuSiparis>();
+        public DbSet<HamburgerSiparis> HamburgerSiparisler => Set<HamburgerSiparis>();
+        public DbSet<IcecekSiparis> IcecekSiparisler => Set<IcecekSiparis>();
+        public DbSet<SosSiparis> SosSiparisler => Set<SosSiparis>();
+        public  DbSet<EkstraSiparis> EkstraSiparisler => Set<EkstraSiparis>();
     }
 }

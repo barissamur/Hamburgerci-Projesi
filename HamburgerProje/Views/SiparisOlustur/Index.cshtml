@@ -656,10 +656,10 @@
                 $("#siparisListe").append(
                     `
                               <li class="list-group-item list-group-item-info list-group-item-action d-flex justify-content-between align-items-baseline"> <b>Toplam tutar: ${top}TL</b>
-                                <button onclick="sepeteEkle()" class="btn btn-outline-primary ms-5">
+                                <a onclick="sepeteGit()" class="btn btn-outline-primary ms-5">
                                     <i class="fa-solid fa-credit-card  me-1"></i>
                                     Ödemeye Geç
-                                </button>
+                                </a>
 
                                  <button onclick="sepetiBosalt()" class="btn btn-danger me-3">
                                     İptal
@@ -806,9 +806,11 @@
             })
     }
 
-
-
-
+    // sepete git
+    function sepeteGit() {
+        let url = "@Url.Action("SiparisOlustur", "SiparisOlustur")";
+        window.location.href = url;
+    }
 
     </script>
 }
