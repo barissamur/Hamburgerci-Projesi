@@ -5,12 +5,12 @@
 
     <div class="row" style="margin-top:150px">
 
-        <div class="col-12 col-sm-6 order-2 order-sm-1">
+        <div class="col-12 col-sm-6 ">
             <ul id="siparisListe" class="shadow list-group-item-action  list-group list-group-flush p-2 card card-header" style="top:18%;">
             </ul>
         </div>
 
-        <div class="col-sm-6 order-1 order-sm-2 mb-3 mb-sm-0">
+        <div class="col-sm-6  mb-3 mb-sm-0">
             <div class="shadow p-2 card card-header mb-2" style="top:18%;">
                 <h4 class='text-center'><b>İletişim Bilgileri</b></h4>
                 <div class="mb-2 d-flex justify-content-around">
@@ -22,9 +22,10 @@
                     </div>
                 </div>
                 <textarea placeholder="Adres..." rows="4" class="form-control align-self-center" style="width:89%"></textarea>
+                <div class="card-footer"></div>
             </div>
 
-            <div class="shadow p-2 card card-header mb-2" style="top:18%;">
+            <div class="shadow p-2 mt-5 card card-header mb-2" style="top:18%;">
                 <h4 class='text-center'><b>Ödeme Yöntemi</b></h4>
 
                 <div class="d-flex justify-content-around">
@@ -53,9 +54,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-footer d-flex mt-4 justify-content-lg-evenly">
-                    <button class="btn btn-success">Ödemeyi Yap</button>
-                    <button class="btn btn-danger">İptal</button>
+                <div class="card-footer d-flex mt-4 justify-content-evenly">
+                    <button onclick="siparisOnay()" class="btn btn-success">Ödemeyi Yap</button>
+                    <button onclick="siparisIptal()" class="btn btn-danger">İptal</button>
                 </div>
             </div>
 
@@ -65,7 +66,6 @@
 
 
 
-</div>
 
 @section Scripts{
     <script>
@@ -195,7 +195,7 @@
     }
     //Sepetteki Ekstralari listeliyoruz end
 
-         // Siparişi listeye ekleme
+    // Siparişi listeye ekleme
     function sepeteEkle() {
         let url = "@Url.Action("SiparisListesi", "SiparisOlustur")";
         fetch(url)
@@ -346,12 +346,154 @@
                 //
                 $("#siparisListe").append(
                     `
-                              <li class="list-group-item text-center list-group-item-info list-group-item-action align-items-baseline"> <b>Toplam tutar: ${top.toLocaleString('tr-TR', { style: 'currency', currency: 'TRY' })}</b>
+                              <li class="list-group-item text-center list-group-item-warning  list-group-item-action align-items-baseline"> <b>Toplam tutar: ${top.toLocaleString('tr-TR', { style: 'currency', currency: 'TRY' })}</b>
                               </li>
                     `
                 )
             })
     }
     // fonksiyon sonu
+
+
+    // sepetten seçili ekstra çıkarma
+    function sepettenSeciliEkstraCikar(id) {
+        let url = "@Url.Action("SepettenSeciliEkstraCikar", "SiparisOlustur")?id=" + id;
+        fetch(url)
+            .then(res => res.text())
+            .then(data => {
+                $("#siparisListe").html("");
+                sepeteEkle();
+                ekstralariListele();
+                IcerikVarmi();
+
+            })
+    }
+    // sepetten seçili ekstra çıkarma end
+
+
+    // sepetten seçili menu çıkarma
+    function sepettenSeciliMenuCikar(id) {
+        let url = "@Url.Action("SepettenSeciliMenuCikar", "SiparisOlustur")?id=" + id;
+        fetch(url)
+            .then(res => res.text())
+            .then(data => {
+                $("#siparisListe").html("");
+                sepeteEkle();
+                menuleriListele();
+                IcerikVarmi();
+
+            })
+    }
+    // sepetten seçili menu çıkarma end
+
+    // sepetten seçili sos çıkarma
+    function sepettenSeciliSosCikar(id) {
+        let url = "@Url.Action("SepettenSeciliSosCikar", "SiparisOlustur")?id=" + id;
+        fetch(url)
+            .then(res => res.text())
+            .then(data => {
+                $("#siparisListe").html("");
+                sepeteEkle();
+                soslariListele();
+                IcerikVarmi();
+
+
+            })
+    }
+    // sepetten seçili sos çıkarma end
+
+
+    // sepetten seçili icecek çıkarma
+    function sepettenSeciliIcecekCikar(id) {
+        let url = "@Url.Action("SepettenSeciliIcecekCikar", "SiparisOlustur")?id=" + id;
+        fetch(url)
+            .then(res => res.text())
+            .then(data => {
+                $("#siparisListe").html("");
+                sepeteEkle();
+                icecekleriListele();
+                IcerikVarmi();
+
+            })
+    }
+    // sepetten seçili icecek çıkarma end
+
+    // sepetten seçili hamburger çıkarma
+    function sepettenSeciliHmbCikar(id) {
+        let url = "@Url.Action("SepettenSeciliHmbCikar", "SiparisOlustur")?id=" + id;
+        fetch(url)
+            .then(res => res.text())
+            .then(data => {
+                $("#siparisListe").html("");
+                sepeteEkle();
+                hamburgerleriListele();
+                IcerikVarmi();
+            })
+    }
+    // sepetten seçili icecek çıkarma end
+
+    // siparişi iptal etme
+    function sepetiBosalt() {
+        let url = "@Url.Action("SepetiBosalt", "SiparisOlustur")";
+        fetch(url)
+            .then(res => res.text())
+            .then(() => {
+                $("#siparisListe").html("<h4 class='text-center'><b>Sepetim</b></h4>");
+                IcerikVarmi();
+            });
+    }
+
+    function siparisIptal() {
+        Swal.fire({
+            title: 'Sepeti boşaltmak istediğinize emin misiniz?',
+            text: "Sepetteki ürünler silinecektir",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Evet, sil!',
+            cancelButtonText: 'Hayır!'
+        })
+            .then((result) => {
+                if (result.isConfirmed) {
+                    sepetiBosalt()
+                }
+            })
+    }
+    // siparişi iptal etme end
+
+
+
+    // siparişi onaylama
+    function sepetiOnayla() {
+        let url = "@Url.Action("SepetiOnayla", "Sepet")";
+        fetch(url)
+            .then(res => res.text())
+            .then(() => {
+                IcerikVarmi();
+                $("#siparisListe").html("<h4 class='text-center'><b>Sepetim</b></h4>");
+            })
+    }
+
+
+    function siparisOnay() {
+        Swal.fire({
+            title: 'Sepetinizi onaylamak istediğinizden emin misiniz?',
+            text: "Sepetiniz onaylanacaktır",
+            icon: 'success',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Evet, onayla!',
+            cancelButtonText: 'Hayır!'
+        })
+            .then((result) => {
+                if (result.isConfirmed) {
+                    sepetiOnayla()
+                }
+            })
+    }
+
+    // siparişi onaylama end
     </script>
 }

@@ -29,43 +29,6 @@ namespace HamburgerProje.Controllers
 
             return View();
 
-            #region sipariş new'leme
-            //if (siparisId != 0)
-            //{
-            //    var siparis = _db.Siparisler
-            //          .Include(s => s.HamburgerSiparisler)
-            //            .ThenInclude(x => x.Hamburger)
-            //          .Include(s => s.IcecekSiparisler)
-            //            .ThenInclude(x => x.Icecek)
-            //          .Include(s => s.SosSiparisler)
-            //            .ThenInclude(x => x.Sos)
-            //          .Include(s => s.EkstraSiparisler)
-            //            .ThenInclude(x => x.Ekstra)
-            //          .Include(s => s.MenuSiparisler)
-            //            .ThenInclude(x => x.Menu)
-            //          .FirstOrDefault(s => s.Id == siparisId);
-
-            //    return View(siparis);
-            //}
-
-            //var bekleyenSiparis = _db.Siparisler
-            //     .Include(s => s.HamburgerSiparisler)
-            //            .ThenInclude(x => x.Hamburger)
-            //          .Include(s => s.IcecekSiparisler)
-            //            .ThenInclude(x => x.Icecek)
-            //          .Include(s => s.SosSiparisler)
-            //            .ThenInclude(x => x.Sos)
-            //          .Include(s => s.EkstraSiparisler)
-            //            .ThenInclude(x => x.Ekstra)
-            //          .Include(s => s.MenuSiparisler)
-            //            .ThenInclude(x => x.Menu)
-            //          .FirstOrDefault(x => x.OdendiMi == false);
-
-            //if (bekleyenSiparis != null)
-            //    return View(bekleyenSiparis);
-
-            //return View();
-            #endregion
         }
 
 
@@ -213,5 +176,110 @@ namespace HamburgerProje.Controllers
             }
             return null;
         }
+
+        public void SepetiOnayla()
+        {
+
+            if (TempData["GeciciSiparis"] != null)
+            {
+
+                TempData["GeciciSiparis"] = JsonConvert
+                                        .DeserializeObject<SiparisViewModel>(TempData["GeciciSiparis"].ToString());
+
+                SiparisViewModel siparisVm = (SiparisViewModel)TempData["GeciciSiparis"];
+                TempData["GeciciSiparis"] = null;
+
+                #region sipariş new'ledik
+
+                var siparis = new Siparis();
+                _db.Siparisler.Add(siparis);
+                _db.SaveChanges();
+
+                var ekstraList = new List<EkstraSiparis>();
+                foreach (var item in siparisVm.Ekstralar)
+                {
+                    var ekstra = new EkstraSiparis()
+                    {
+                        EkstraId = item.Id,
+                        SiparisId = siparis.Id
+                    };
+
+                    ekstraList.Add(ekstra);
+                }
+                _db.EkstraSiparisler.AddRange(ekstraList);
+
+                var hamburgerList = new List<HamburgerSiparis>();
+                foreach (var item in siparisVm.Hamburgerler)
+                {
+                    var hamburger = new HamburgerSiparis()
+                    {
+                        HamburgerId = item.Id,
+                        SiparisId = siparis.Id
+                    };
+
+                    hamburgerList.Add(hamburger);
+                }
+                _db.HamburgerSiparisler.AddRange(hamburgerList);
+
+                var sosList = new List<SosSiparis>();
+                foreach (var item in siparisVm.Soslar)
+                {
+                    var sos = new SosSiparis()
+                    {
+                        SosId = item.Id,
+                        SiparisId = siparis.Id
+                    };
+
+                    sosList.Add(sos);
+                }
+                _db.SosSiparisler.AddRange(sosList);
+
+                var icecekList = new List<IcecekSiparis>();
+                foreach (var item in siparisVm.Icecekler)
+                {
+                    var icecek = new IcecekSiparis()
+                    {
+                        IcecekId = item.Id,
+                        SiparisId = siparis.Id
+                    };
+
+                    icecekList.Add(icecek);
+                }
+                _db.IcecekSiparisler.AddRange(icecekList);
+
+                var menuList = new List<MenuSiparis>();
+                foreach (var item in siparisVm.Menuler)
+                {
+                    var menu = new MenuSiparis()
+                    {
+                        MenuId = item.Id,
+                        SiparisId = siparis.Id
+                    };
+
+                    menuList.Add(menu);
+                }
+                _db.MenuSiparisler.AddRange(menuList);
+
+
+                var hmblerToplamFiyat = siparisVm.Hamburgerler.Sum(x => x.Fiyat);
+                var menulerToplamFiyat = siparisVm.Menuler.Sum(x => x.Fiyat);
+                var soslarToplamFiyat = siparisVm.Soslar.Sum(x => x.Fiyat);
+                var ekstralarToplamFiyat = siparisVm.Ekstralar.Sum(x => x.Fiyat);
+                var iceceklerToplamFiyat = siparisVm.Icecekler.Sum(x => x.Fiyat);
+
+                var siparisToplamFiyat = hmblerToplamFiyat + menulerToplamFiyat + soslarToplamFiyat + ekstralarToplamFiyat + iceceklerToplamFiyat;
+                siparis.Toplam = siparisToplamFiyat;
+
+                _db.SaveChanges();
+
+                var siparisId = siparis.Id;
+            }
+
+        }
+
+        #endregion
+
+
     }
 }
+
