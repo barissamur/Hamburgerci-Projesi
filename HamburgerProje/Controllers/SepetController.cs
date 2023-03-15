@@ -250,6 +250,9 @@ namespace HamburgerProje.Controllers
                 var menuList = new List<MenuSiparis>();
                 foreach (var item in siparisVm.Menuler)
                 {
+                    var gercekMenu = _db.Menuler.Find(item.Id);
+                    gercekMenu.Adet++;
+
                     var menu = new MenuSiparis()
                     {
                         MenuId = item.Id,
