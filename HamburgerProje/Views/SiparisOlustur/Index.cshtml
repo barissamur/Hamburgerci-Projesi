@@ -50,9 +50,6 @@
 
             <ul id="siparisListe" class="position-fixed shadow list-group-item-action  list-group list-group-flush p-2 card card-header" style="top:18%; width:500px">
             </ul>
-
-
-
         </div>
     </div>
 </div>
@@ -655,9 +652,9 @@
 
                 $("#siparisListe").append(
                     `
-                              <li class="list-group-item list-group-item-info list-group-item-action d-flex justify-content-between align-items-baseline"> <b>Toplam tutar: ${top}TL</b>
-                                <a onclick="sepeteGit()" class="btn btn-outline-primary ms-5">
-                                    <i class="fa-solid fa-credit-card  me-1"></i>
+                              <li class="list-group-item list-group-item-info list-group-item-action d-flex justify-content-between align-items-baseline"> <b>Toplam tutar: ${top.toLocaleString('tr-TR', { style: 'currency', currency: 'TRY' }) }</b>
+                                <a onclick="sepeteGit()" class="btn btn-outline-primary ms-3">
+                                    <i class="fa-solid fa-credit-card"></i>
                                     Ödemeye Geç
                                 </a>
 
@@ -670,7 +667,7 @@
                 //
             })
     }
-    // fonksiyon sonu
+    // siparişi listeye ekleme sonu
 
 
     // sepetten seçili ekstra çıkarma

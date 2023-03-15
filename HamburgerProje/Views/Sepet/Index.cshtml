@@ -5,31 +5,89 @@
 
     <div class="row" style="margin-top:150px">
 
-        <div id="menuler"></div>
-        <div id="hamburgerler"></div>
-        <div id="icecekler"></div>
-        <div id="ekstralar"></div>
-        <div id="soslar"></div>
+        <div class="col-12 col-sm-6 order-2 order-sm-1">
+            <ul id="siparisListe" class="shadow list-group-item-action  list-group list-group-flush p-2 card card-header" style="top:18%;">
+            </ul>
+        </div>
 
+        <div class="col-sm-6 order-1 order-sm-2 mb-3 mb-sm-0">
+            <div class="shadow p-2 card card-header mb-2" style="top:18%;">
+                <h4 class='text-center'><b>İletişim Bilgileri</b></h4>
+                <div class="mb-2 d-flex justify-content-around">
+                    <div>
+                        <input placeholder="Ad" type="text" class="form-control" />
+                    </div>
+                    <div>
+                        <input placeholder="Soyad" type="text" class="form-control" />
+                    </div>
+                </div>
+                <textarea placeholder="Adres..." rows="4" class="form-control align-self-center" style="width:89%"></textarea>
+            </div>
 
+            <div class="shadow p-2 card card-header mb-2" style="top:18%;">
+                <h4 class='text-center'><b>Ödeme Yöntemi</b></h4>
 
+                <div class="d-flex justify-content-around">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                        <label class="form-check-label" for="flexRadioDefault1">
+                            Kredi Kartı
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+                        <label class="form-check-label" for="flexRadioDefault2">
+                            Nakit
+                        </label>
+                    </div>
+                </div>
+                <div id="krediKartiFormu" style="display:none">
+                    <input placeholder="Kart Numaranız..." type="text" class="form-control" />
+                    <div class="my-2 d-flex justify-content-around">
+                        <div>
+                            <input placeholder="Son Kullanma Tarihi" type="text" class="form-control" />
+                        </div>
+                        <div>
+                            <input placeholder="CVC" type="text" class="form-control" />
+                        </div>
+                    </div>
+                    <input placeholder="Kart Sahibinin Adı Soyadı..." type="text" class="form-control" />
+                </div>
+                <div class="card-footer d-flex mt-4 justify-content-lg-evenly">
+                    <button class="btn btn-success">Ödemeyi Yap</button>
+                    <button class="btn btn-danger">İptal</button>
+                </div>
+            </div>
 
-
-
+        </div>
     </div>
+</div>
 
 
 
 </div>
 
-@section Scripts{ 
+@section Scripts{
     <script>
-    menuleriListele();
-    hamburgerleriListele();
-    icecekleriListele();
-        soslariListele();
-        ekstralariListele();
 
+        // Kredi kartı seçildiğinde form gösterilir
+        $('#flexRadioDefault1').click(function () {
+                $('#krediKartiFormu').slideDown("fast");
+                $("#krediKartiFormu").css("display", "block");
+            });
+
+        // Nakit seçildiğinde form gizlenir
+        $('#flexRadioDefault2').click(function () {
+            $('#krediKartiFormu').slideUp("fast");
+        });
+
+
+    sepeteEkle();
+    menuleriListele();
+    soslariListele();
+    icecekleriListele();
+    ekstralariListele();
+    hamburgerleriListele();
 
     //Sepetteki Menüleri listeliyoruz
     function menuleriListele() {
@@ -136,5 +194,164 @@
         })
     }
     //Sepetteki Ekstralari listeliyoruz end
+
+         // Siparişi listeye ekleme
+    function sepeteEkle() {
+        let url = "@Url.Action("SiparisListesi", "SiparisOlustur")";
+        fetch(url)
+            .then(res => res.text())
+            .then(data => {
+                $("#siparisListe").html("");
+                $("#siparisListe").append("<h4 class='text-center'><b>Sepetim</b></h4>");
+                const jsonData = JSON.parse(data);
+                let top = 0;
+                //Hamburgerlerin ad ve adet bilgilerini içeren dictionary
+                const hamburgerDict = {};
+                for (const hmb of jsonData.hamburgerler) {
+                    if (hmb.ad in hamburgerDict) {
+                        hamburgerDict[hmb.ad].adet++;
+                    } else {
+                        hamburgerDict[hmb.ad] = { adet: 1, fiyat: hmb.fiyat, id: hmb.id };
+                    }
+                }
+
+                for (const ad in hamburgerDict) {
+                    const { adet, fiyat, id } = hamburgerDict[ad];
+                    const toplamFiyat = adet * fiyat;
+                    top += toplamFiyat;
+                    $("#siparisListe").append(
+                        `
+                             <li class="list-group-item list-group-item-info list-group-item-action d-flex justify-content-between align-items-baseline">
+                                <span>
+                                    ${adet} x ${ad}
+                                    <span class="fw-bold">(${toplamFiyat.toLocaleString('tr-TR', { style: 'currency', currency: 'TRY' }) })</span>
+                                </span>
+                                <button onclick="sepettenSeciliHmbCikar('${id}')" class="btn text-danger" ><i class="fa-solid fa-trash me-1"></i></button>
+                             </li>
+                        `
+                    );
+                }
+                //
+
+                // İçeceklerin ad ve adet bilgilerini içeren dictionary
+                const icecekDict = {};
+                for (const icecek of jsonData.icecekler) {
+                    if (icecek.ad in icecekDict) {
+                        icecekDict[icecek.ad].adet++;
+                    } else {
+                        icecekDict[icecek.ad] = { adet: 1, fiyat: icecek.fiyat, id: icecek.id };
+                    }
+                }
+
+                for (const ad in icecekDict) {
+                    const { adet, fiyat, id } = icecekDict[ad];
+                    const toplamFiyat = adet * fiyat;
+                    top += toplamFiyat;
+                    $("#siparisListe").append(
+                        `
+                             <li class="list-group-item list-group-item-info list-group-item-action d-flex justify-content-between align-items-baseline">
+                                <span>
+                                    ${adet} x ${ad}
+                                    <span class="fw-bold">(${toplamFiyat.toLocaleString('tr-TR', { style: 'currency', currency: 'TRY' }) })</span>
+                                </span>
+                                <button onclick="sepettenSeciliIcecekCikar('${id}')" class="btn text-danger" ><i class="fa-solid fa-trash me-1"></i></button>
+                             </li>
+                        `
+                    )
+                }
+                //
+
+                // Sosların ad ve adet bilgilerini içeren dictionary
+                const sosDict = {};
+                for (const sos of jsonData.soslar) {
+                    if (sos.ad in sosDict) {
+                        sosDict[sos.ad].adet++;
+                    } else {
+                        sosDict[sos.ad] = { adet: 1, fiyat: sos.fiyat, id: sos.id };
+                    }
+                }
+
+                for (const ad in sosDict) {
+                    const { adet, fiyat, id } = sosDict[ad];
+                    const toplamFiyat = adet * fiyat;
+                    top += toplamFiyat;
+                    $("#siparisListe").append(
+                        `
+                             <li class="list-group-item list-group-item-info list-group-item-action d-flex justify-content-between align-items-baseline">
+                                <span>
+                                    ${adet} x ${ad}
+                                    <span class="fw-bold">(${toplamFiyat.toLocaleString('tr-TR', { style: 'currency', currency: 'TRY' }) })</span>
+                                </span>
+                                <button onclick="sepettenSeciliSosCikar('${id}')" class="btn text-danger" ><i class="fa-solid fa-trash me-1"></i></button>
+                             </li>
+                        `
+                    )
+                }
+                //
+
+                // Menülerin ad ve adet bilgilerini içeren dictionary
+                const menuDict = {};
+                for (const menu of jsonData.menuler) {
+                    if (menu.ad in menuDict) {
+                        menuDict[menu.ad].adet++;
+                    } else {
+                        menuDict[menu.ad] = { adet: 1, fiyat: menu.fiyat, id: menu.id };
+                    }
+                }
+
+                for (const ad in menuDict) {
+                    const { adet, fiyat, id } = menuDict[ad];
+                    const toplamFiyat = adet * fiyat;
+                    top += toplamFiyat;
+                    $("#siparisListe").append(
+                        `
+                             <li class="list-group-item list-group-item-info list-group-item-action d-flex justify-content-between align-items-baseline">
+                                <span>
+                                    ${adet} x ${ad}
+                                    <span class="fw-bold">(${toplamFiyat.toLocaleString('tr-TR', { style: 'currency', currency: 'TRY' }) })</span>
+                                </span>
+                                <button onclick="sepettenSeciliMenuCikar('${id}')" class="btn text-danger" ><i class="fa-solid fa-trash me-1"></i></button>
+                             </li>
+                        `
+                    )
+                }
+                //
+
+                // Ekstra ad ve adet bilgilerini içeren dictionary
+                const ekstraDict = {};
+                for (const ekstra of jsonData.ekstralar) {
+                    if (ekstra.ad in ekstraDict) {
+                        ekstraDict[ekstra.ad].adet++;
+                    } else {
+                        ekstraDict[ekstra.ad] = { adet: 1, fiyat: ekstra.fiyat, id: ekstra.id };
+                    }
+                }
+
+                for (const ad in ekstraDict) {
+                    const { adet, fiyat, id } = ekstraDict[ad];
+                    const toplamFiyat = adet * fiyat;
+                    top += toplamFiyat;
+                    $("#siparisListe").append(
+                        `
+                             <li class="list-group-item list-group-item-info list-group-item-action d-flex justify-content-between align-items-baseline">
+                                <span>
+                                    ${adet} x ${ad}
+                                    <span class="fw-bold">(${toplamFiyat.toLocaleString('tr-TR', { style: 'currency', currency: 'TRY' }) })</span>
+                                </span>
+                                <button onclick="sepettenSeciliEkstraCikar('${id}')" class="btn text-danger" ><i class="fa-solid fa-trash me-1"></i></button>
+                             </li>
+                        `
+                    )
+                }
+                //
+                $("#siparisListe").append(
+                    `
+                              <li class="list-group-item text-center list-group-item-info list-group-item-action align-items-baseline"> <b>Toplam tutar: ${top.toLocaleString('tr-TR', { style: 'currency', currency: 'TRY' })}</b>
+                              </li>
+                    `
+                )
+            })
+    }
+    // fonksiyon sonu
     </script>
 }
