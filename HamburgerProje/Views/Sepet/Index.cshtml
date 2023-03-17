@@ -457,6 +457,19 @@
             .then((result) => {
                 if (result.isConfirmed) {
                     sepetiBosalt()
+
+                    Swal.fire({
+                        title: 'Sepet boşaltıldı',
+                        icon: 'error',
+                        timer: 3000,
+                        timerProgressBar: true,
+                        showConfirmButton: false,
+                        didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+
                 }
             })
     }
@@ -489,7 +502,21 @@
         })
             .then((result) => {
                 if (result.isConfirmed) {
-                    sepetiOnayla()
+                    sepetiOnayla();
+
+                    Swal.fire({
+                        title: 'Siparişiniz alınmıştır',
+                        icon: 'success',
+                        timer: 3000,
+                        timerProgressBar: true,
+                        showConfirmButton: false,
+                        didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+
+
                 }
             })
     }

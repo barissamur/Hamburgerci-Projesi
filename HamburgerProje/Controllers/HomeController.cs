@@ -1,6 +1,7 @@
 ﻿using HamburgerProje.Data;
 using HamburgerProje.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Diagnostics;
 
 namespace HamburgerProje.Controllers
@@ -21,7 +22,7 @@ namespace HamburgerProje.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult Hakkimizda()
         {
             return View();
         }
@@ -36,6 +37,34 @@ namespace HamburgerProje.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        public IActionResult EnCokListesindenSepeteEkle(int id)
+        {
+            var menu = _db.Menuler.Find(id);
+
+            if (TempData["GeciciSiparis"] == null)
+            {
+                var siparisVm = new SiparisViewModel();
+
+                siparisVm.Menuler.Add(menu);
+
+                TempData["GeciciSiparis"] = JsonConvert.SerializeObject(siparisVm);
+            }
+
+            else
+            {
+                TempData["GeciciSiparis"] = JsonConvert
+                    .DeserializeObject<SiparisViewModel>(TempData["GeciciSiparis"].ToString());
+
+                SiparisViewModel siparisVm2 = (SiparisViewModel)TempData["GeciciSiparis"];
+
+                siparisVm2.Menuler.Add(menu);
+                TempData["GeciciSiparis"] = JsonConvert.SerializeObject(siparisVm2);
+            }
+
+            return RedirectToAction("Index");
+        }
+
 
     }
 }

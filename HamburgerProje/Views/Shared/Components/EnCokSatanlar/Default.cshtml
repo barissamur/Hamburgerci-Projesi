@@ -4,21 +4,23 @@
 
 <div class="row">
 
-
-
-
     @foreach (var gruplama in Model)
     {
         <div class="col-3">
             <div class="card" style="width: 18rem;">
                 <img class="card-img-top" src="~/img/@gruplama.Key.Resim" height="200" alt="Card image cap">
-                <div class="card-body">
+                <div class="card-body" style="height:290px;">
                     <h5 class="card-title">@gruplama.Key.Ad</h5>
-                    @foreach (var urun in gruplama.Value)
-                    {
-                        <p class="card-text">@urun.Value adet @urun.Key</p>
-                    }
-                <a href="#" class="btn btn-primary">@gruplama.Key.Fiyat.ToString("c2")</a>
+                    <ul class="" style="height:170px;">
+                        @foreach (var urun in gruplama.Value)
+                        {
+                            <li class="card-text mb-1">@urun.Value adet @urun.Key</li>
+                        }
+                    </ul>
+                    <div class="d-flex align-items-baseline justify-content-between">
+                        <a asp-controller="Home" asp-action="EnCokListesindenSepeteEkle" asp-route-id="@gruplama.Key.Id" class="btn btn-primary">Sepete Ekle</a>
+                        <p class="fs-5 fw-bold">@gruplama.Key.Fiyat.ToString("c2")</p>
+                    </div>
                 </div>
             </div>
         </div>
