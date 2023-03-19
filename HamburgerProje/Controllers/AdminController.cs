@@ -1,5 +1,6 @@
 ﻿using HamburgerProje.Data;
 using HamburgerProje.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using System;
 
 namespace HamburgerProje.Controllers
 {
+    [Authorize(Roles ="admin")]
     public class AdminController : Controller
     {
         private readonly UygulamaDbContext _db;
