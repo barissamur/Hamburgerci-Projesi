@@ -1,15 +1,21 @@
 using HamburgerProje.Data;
 using HamburgerProje.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var cs = builder.Configuration.GetConnectionString("BaglantiCumlesi"); // appsettings.json dosyasýndaki Connection String cümlesini alýyoruz
+var cs = builder.Configuration.GetConnectionString("BaglantiCumlesi"); // appsettings.json dosyasï¿½ndaki Connection String cï¿½mlesini alï¿½yoruz
 builder.Services.AddDbContext<UygulamaDbContext>(o => o.UseSqlServer(cs));
+
+builder.Services.AddDefaultIdentity<Kullanici>(options => options.SignIn.RequireConfirmedAccount = false)
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<UygulamaDbContext>();
 
 
 builder.Services.AddControllersWithViews();
+
 
 var app = builder.Build();
 
@@ -25,6 +31,31 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.MapRazorPages(); // eklendi
+
+using (var scope = app.Services.CreateScope())
+{
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<Kullanici>>();
+
+    await roleManager.CreateAsync(new IdentityRole("admin")); // burada db'ye admin rolunÃ¼ asenkron olarak ekledi
+
+    var adminUser = new Kullanici()
+    {
+        UserName = "kullanici@k.com",
+        Email = "kullanici@k.com",
+        EmailConfirmed= true,
+    };
+
+    await userManager.CreateAsync(adminUser, "Asd123.");// burada db'ye adminUser kiÅŸisini asenkron olarak ekledi
+
+    await userManager.AddToRoleAsync(adminUser, "admin");
+}
+
+
+
+app.UseAuthentication(); ;
 
 app.UseAuthorization();
 

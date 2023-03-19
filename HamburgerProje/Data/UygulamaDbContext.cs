@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace HamburgerProje.Data
 {
-    public class UygulamaDbContext : DbContext
+    public class UygulamaDbContext : IdentityDbContext<Kullanici>
     {
         public UygulamaDbContext(DbContextOptions<UygulamaDbContext> options) : base(options)
         {
