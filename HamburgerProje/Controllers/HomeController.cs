@@ -22,6 +22,10 @@ namespace HamburgerProje.Controllers
             return View();
         }
 
+        public IActionResult Firsatlar()
+        {
+            return View(_db.Menuler.ToList());
+        }
         public IActionResult Hakkimizda()
         {
             return View();
@@ -65,6 +69,32 @@ namespace HamburgerProje.Controllers
             return RedirectToAction("Index");
         }
 
+        public IActionResult FirsatlardanSepeteEkle(int id)
+        {
+            var menu = _db.Menuler.Find(id);
+
+            if (TempData["GeciciSiparis"] == null)
+            {
+                var siparisVm = new SiparisViewModel();
+
+                siparisVm.Menuler.Add(menu);
+
+                TempData["GeciciSiparis"] = JsonConvert.SerializeObject(siparisVm);
+            }
+
+            else
+            {
+                TempData["GeciciSiparis"] = JsonConvert
+                    .DeserializeObject<SiparisViewModel>(TempData["GeciciSiparis"].ToString());
+
+                SiparisViewModel siparisVm2 = (SiparisViewModel)TempData["GeciciSiparis"];
+
+                siparisVm2.Menuler.Add(menu);
+                TempData["GeciciSiparis"] = JsonConvert.SerializeObject(siparisVm2);
+            }
+
+            return RedirectToAction("Firsatlar");
+        }
 
     }
 }
